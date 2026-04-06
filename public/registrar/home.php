@@ -1,61 +1,184 @@
 <?php session_start();
 include('header.php'); ?>
 
-<div class="p-6 md:p-10 bg-base-200 min-h-screen">
+<div class="h-screen w-screen bg-cover bg-center bg-no-repeat bg-fixed overflow-hidden flex flex-col"
+    style="background-image: url('../../img/regbg.jpg');">
 
-    <div class="max-w-7xl mx-auto mb-10">
-        <h1 class="text-3xl font-black tracking-tight italic uppercase">Administrative Overview</h1>
-        <p class="text-base-content opacity-60">Manage student records and system verifications.</p>
-    </div>
-
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-        <div class="card bg-base-100 shadow-xl border-t-4 border-primary hover:shadow-2xl transition-all duration-300">
-            <div class="card-body">
-                <div class="flex justify-between items-start">
-                    <h2 class="card-title text-primary font-bold">Enrollments</h2>
-                    <div class="badge badge-primary badge-outline">Active</div>
-                </div>
-                <p class="text-sm opacity-70 mt-2">Process new and returning student enrollment applications.</p>
-                <div class="card-actions justify-end mt-6">
-                    <a href="manage_enrollments.php" class="btn btn-primary btn-sm btn-block">Open Module</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="card bg-base-100 shadow-xl border-t-4 border-info hover:shadow-2xl transition-all duration-300">
-            <div class="card-body">
-                <h2 class="card-title text-info font-bold">Exam Passers</h2>
-                <p class="text-sm opacity-70 mt-2">Manage the list of successful examinees and admission status.</p>
-                <div class="card-actions justify-end mt-6">
-                    <a href="exam_passers.php" class="btn btn-info btn-sm btn-block text-white">View List</a>
-                </div>
-            </div>
-        </div>
+    <div
+        class="h-full w-full bg-slate-950/50 backdrop-blur-[2px] flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
 
         <div
-            class="card bg-base-100 shadow-xl border-t-4 border-secondary hover:shadow-2xl transition-all duration-300">
-            <div class="card-body">
-                <h2 class="card-title text-secondary font-bold">Student Grades</h2>
-                <p class="text-sm opacity-70 mt-2">Input and finalize academic records and semester grades.</p>
-                <div class="card-actions justify-end mt-6">
-                    <a href="manage_grades.php" class="btn btn-secondary btn-sm btn-block">Update Grades</a>
+            class="navbar bg-blue-700/90 backdrop-blur-xl shadow-2xl border-b border-blue-400/30 px-8 sticky top-0 z-50">
+            <div class="flex-1">
+                <div class="flex flex-col">
+                    <span class="text-sm font-black uppercase tracking-[0.4em] text-white">
+                        LCC <span class="text-blue-200">Registrar</span>
+                    </span>
+                    <span class="text-[9px] text-blue-100/60 font-bold uppercase tracking-widest -mt-1">Administrative
+                        Control Center</span>
                 </div>
+            </div>
+            <div class="flex-none gap-6">
+
+
+                <a href="logout.php"
+                    class="btn btn-ghost btn-sm text-white hover:bg-rose-500 hover:text-white font-black rounded-xl transition-all">
+                    Sign Out
+                </a>
             </div>
         </div>
 
-        <div class="card bg-base-100 shadow-xl border-t-4 border-accent hover:shadow-2xl transition-all duration-300">
-            <div class="card-body">
-                <div class="flex justify-between items-start">
-                    <h2 class="card-title text-accent font-bold">Verifications</h2>
-                    <div class="badge badge-accent badge-sm">New</div>
-                </div>
-                <p class="text-sm opacity-70 mt-2">Validate identity and credentials for new user registrations.</p>
-                <div class="card-actions justify-end mt-6">
-                    <a href="verify_accounts.php" class="btn btn-accent btn-sm btn-block text-white">Review Now</a>
+        <main class="p-6 md:p-12 max-w-7xl w-full mx-auto flex-grow">
+
+            <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <h1 class="text-6xl font-black text-white tracking-tighter italic uppercase drop-shadow-2xl">
+                        Registrar <span class="text-blue-400 italic">Dashboard</span>
+                    </h1>
+                    <div class="flex items-center gap-3 mt-4">
+                        <div class="h-[2px] w-16 bg-blue-500"></div>
+                        <p class="text-blue-100 text-xs font-bold uppercase tracking-[0.3em] opacity-80">
+                            Academic Year 2025 - 2026
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <a href="manage_enrollments.php"
+                    class="group relative card bg-white rounded-3xl border-b-4 border-blue-600 shadow-2xl hover:-translate-y-3 transition-all duration-500">
+                    <div class="card-body p-8">
+                        <div
+                            class="absolute -top-6 right-8 p-4 bg-blue-600 text-white rounded-2xl shadow-xl shadow-blue-500/40 group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="badge badge-sm font-black bg-blue-50 border-none text-blue-600 mb-4 px-3">QUEUE
+                                OPEN</div>
+                            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Enrollment</h2>
+                            <p class="text-xs text-slate-500 font-semibold leading-relaxed">Systematic validation of new
+                                and returning student application forms.</p>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Access
+                                Module</span>
+                            <div
+                                class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor font-bold">
+                                    <path d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="exam_passers.php"
+                    class="group relative card bg-white rounded-3xl border-b-4 border-cyan-500 shadow-2xl hover:-translate-y-3 transition-all duration-500">
+                    <div class="card-body p-8">
+                        <div
+                            class="absolute -top-6 right-8 p-4 bg-cyan-500 text-white rounded-2xl shadow-xl shadow-cyan-500/40 group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="mt-4">
+                            <div class="badge badge-sm font-black bg-cyan-50 border-none text-cyan-600 mb-4 px-3">
+                                ADMISSION</div>
+                            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Exam Passers</h2>
+                            <p class="text-xs text-slate-500 font-semibold leading-relaxed">Modify and release official
+                                admission lists for qualified examinees.</p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-[10px] font-black text-cyan-600 uppercase tracking-widest">View
+                                Results</span>
+                            <div
+                                class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="manage_grades.php"
+                    class="group relative card bg-white rounded-3xl border-b-4 border-indigo-600 shadow-2xl hover:-translate-y-3 transition-all duration-500">
+                    <div class="card-body p-8">
+                        <div
+                            class="absolute -top-6 right-8 p-4 bg-indigo-600 text-white rounded-2xl shadow-xl shadow-indigo-500/40 group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </div>
+                        <div class="mt-4">
+                            <div class="badge badge-sm font-black bg-indigo-50 border-none text-indigo-600 mb-4 px-3">
+                                RECORDS</div>
+                            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Student Grades</h2>
+                            <p class="text-xs text-slate-500 font-semibold leading-relaxed">Secure encoding and
+                                processing of permanent scholastic evaluations.</p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Update
+                                Grades</span>
+                            <div
+                                class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="verify_accounts.php"
+                    class="group relative card bg-white rounded-3xl border-b-4 border-teal-500 shadow-2xl hover:-translate-y-3 transition-all duration-500">
+                    <div class="card-body p-8">
+                        <div
+                            class="absolute -top-6 right-8 p-4 bg-teal-500 text-white rounded-2xl shadow-xl shadow-teal-500/40 group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div class="mt-4">
+                            <div
+                                class="badge badge-sm font-black bg-teal-500 border-none text-white mb-4 px-3 shadow-lg shadow-teal-100 italic">
+                                NEW REQUESTS</div>
+                            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Verifications</h2>
+                            <p class="text-xs text-slate-500 font-semibold leading-relaxed">Identity validation and
+                                credential review for portal registration.</p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-[10px] font-black text-teal-600 uppercase tracking-widest">Start
+                                Review</span>
+                            <div
+                                class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-teal-500 group-hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </main>
 
     </div>
 </div>
