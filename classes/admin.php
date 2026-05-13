@@ -73,7 +73,33 @@ class admins extends Dbh
         }
     }
 
+    //view departments
+    public function viewDepartments()
+    {
+        $conn = $this->connect();
 
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT * 
+            FROM departments 
+            ORDER BY id DESC";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0
+            ? $result->fetch_all(MYSQLI_ASSOC)
+            : null;
+    }
 
 }
 ?>
