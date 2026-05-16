@@ -1,11 +1,12 @@
 <?php session_start();
-include('includes/depHeader.php'); ?>
+include('includes/couHeader.php'); ?>
 
 <?php
 include('../../classes/admin.php');
 
 $data = new admins();
-$row = $data->viewDepartments();
+$row = $data->viewCourses();
+$departments = $data->viewDepartments();
 ?>
 
 <div class="min-h-screen bg-slate-50">
@@ -23,7 +24,7 @@ $row = $data->viewDepartments();
         </div>
 
         <div class="flex-none hidden lg:block">
-            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Department Management</h1>
+            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Courses Management</h1>
         </div>
 
         <div class="flex-1 justify-end flex">
@@ -32,7 +33,7 @@ $row = $data->viewDepartments();
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Create Department
+                Create Course
             </button>
         </div>
     </div>
@@ -42,12 +43,12 @@ $row = $data->viewDepartments();
         <div class="flex flex-col md:flex-row items-baseline justify-between mb-8 gap-2">
             <div>
                 <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">
-                    Departments
+                    Courses
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Manage departments.</p>
+                <p class="text-slate-500 text-sm mt-1">Manage Courses.</p>
             </div>
             <div class="badge badge-lg bg-blue-50 text-blue-700 border-blue-100 font-medium px-4 py-3">
-                <?php echo count($row); ?> Total Departments
+                <?php echo count($row); ?> Total Courses
             </div>
         </div>
 
@@ -56,8 +57,8 @@ $row = $data->viewDepartments();
                 <table class="table w-full border-separate border-spacing-0">
                     <thead class="bg-slate-50">
                         <tr>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Department</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Department Code
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Course Name</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Course Code
                             </th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Date Created
                             </th>
@@ -76,7 +77,7 @@ $row = $data->viewDepartments();
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                     </svg>
-                                    <span class="text-lg font-semibold tracking-tight">No departments found.</span>
+                                    <span class="text-lg font-semibold tracking-tight">No courses found.</span>
                                 </div>
                             </td>
                         </tr>
@@ -87,13 +88,13 @@ $row = $data->viewDepartments();
                             <td class="py-4 px-6">
                                 <div class="flex items-center gap-3">
                                     <span class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">
-                                        <?php echo htmlspecialchars($items['department_name']); ?>
+                                        <?php echo htmlspecialchars($items['course_name']); ?>
                                     </span>
                                 </div>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['department_code']); ?>
+                                <?php echo htmlspecialchars($items['course_code']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
@@ -105,8 +106,8 @@ $row = $data->viewDepartments();
                                     <button
                                         class="btn btn-sm btn-ghost hover:bg-white hover:text-blue-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-blue-200 --btn-edit"
                                         data-id="<?php echo $items['id']; ?>"
-                                        data-name="<?php echo $items['department_name']; ?>"
-                                        data-code="<?php echo $items['department_code']; ?>">
+                                        data-name="<?php echo $items['course_name']; ?>"
+                                        data-code="<?php echo $items['course_code']; ?>">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -137,12 +138,12 @@ $row = $data->viewDepartments();
         </div>
     </div>
 
-    <!-- CREATE NEW DEPARTMENT -->
+    <!-- CREATE NEW COURSE -->
     <dialog id="createModal" class="modal">
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Create New Department</h2>
+                <h2 class="text-xl font-bold text-white">Create New Course</h2>
             </div>
 
             <div class="p-6">
@@ -150,11 +151,38 @@ $row = $data->viewDepartments();
                     class="hidden mb-4 text-sm p-3 rounded-lg bg-rose-50 text-rose-600 border border-rose-100"></div>
 
                 <form id="createForm" class="space-y-4">
+
+                    <!-- DEPARTMENT -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
+                                Department
+                            </span>
+                        </label>
+
+                        <select id="departmentId" name="departmentId"
+                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                            required>
+
+                            <option value="">Select Department</option>
+
+                            <?php foreach ($departments as $department) { ?>
+                            <option value="<?php echo $department['id']; ?>">
+                                <?php echo htmlspecialchars($department['department_name']); ?>
+                                (
+                                <?php echo htmlspecialchars($department['department_code']); ?>)
+                            </option>
+                            <?php } ?>
+
+                        </select>
+                    </div>
+
                     <div class="form-control">
                         <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Department
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Course
                                 Name</span></label>
-                        <input type="text" id="depName" name="depName" placeholder="College of Arts and Sciences"
+                        <input type="text" id="couName" name="couName"
+                            placeholder="Bachelor of Science in Information Technology"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
@@ -163,7 +191,7 @@ $row = $data->viewDepartments();
                         <label class="label"><span
                                 class="label-text font-bold text-slate-600 uppercase text-[10px]">Code
                             </span></label>
-                        <input type="text" id="code" name="code" placeholder="CAS"
+                        <input type="text" id="couCode" name="couCode" placeholder="BSIT"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
@@ -175,7 +203,7 @@ $row = $data->viewDepartments();
                             Cancel
                         </button>
                         <button type="button" class="btn flex-1 btn-primary shadow-lg shadow-blue-200 --btn-register">
-                            Create Department
+                            Create Course
                         </button>
                     </div>
                 </form>
@@ -191,7 +219,7 @@ $row = $data->viewDepartments();
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Edit Department</h2>
+                <h2 class="text-xl font-bold text-white">Edit Course</h2>
             </div>
 
             <div class="p-6">
@@ -208,11 +236,11 @@ $row = $data->viewDepartments();
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Department Name
+                                Course Name
                             </span>
                         </label>
 
-                        <input type="text" id="editDepName" name="department_name"
+                        <input type="text" id="editCouName" name="course_name"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
@@ -220,11 +248,11 @@ $row = $data->viewDepartments();
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Department Code
+                                Course Code
                             </span>
                         </label>
 
-                        <input type="text" id="editCode" name="department_code"
+                        <input type="text" id="editCouCode" name="course_code"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
@@ -254,4 +282,4 @@ $row = $data->viewDepartments();
 
 </div>
 
-<?php include('includes/depFooter.php'); ?>
+<?php include('includes/couFooter.php'); ?>
