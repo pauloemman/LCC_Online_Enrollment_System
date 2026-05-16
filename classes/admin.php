@@ -12,7 +12,7 @@ class admins extends Dbh
             die("Database connection failed: " . $conn->connect_error);
         }
 
-        $sql = "SELECT name, email 
+        $sql = "SELECT *
             FROM users 
             WHERE role = ? 
             ORDER BY id DESC";
@@ -26,9 +26,12 @@ class admins extends Dbh
         $stmt->bind_param("s", $role);
 
         $stmt->execute();
+
         $result = $stmt->get_result();
 
-        return $result->num_rows > 0 ? $result->fetch_all(MYSQLI_ASSOC) : null;
+        return $result->num_rows > 0
+            ? $result->fetch_all(MYSQLI_ASSOC)
+            : [];
     }
 
     //create registrar account
@@ -71,6 +74,77 @@ class admins extends Dbh
             return 1; // success
         } else {
             return 2; // error
+        }
+    }
+
+    //edit registrar account
+    public function updateRegistrar($name, $email, $password)
+    {
+        $conn = $this->connect();
+
+        // IF PASSWORD IS CHANGED
+        if (!empty($password)) {
+
+            $stmt = $conn->prepare("
+            UPDATE users
+            SET name = ?, password = ?
+            WHERE email = ?
+        ");
+
+            $stmt->bind_param("sss", $name, $password, $email);
+
+        }
+
+        // IF PASSWORD IS EMPTY
+        else {
+
+            $stmt = $conn->prepare("
+            UPDATE users
+            SET name = ?
+            WHERE email = ?
+        ");
+
+            $stmt->bind_param("ss", $name, $email);
+        }
+
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //delete registrar account
+    public function deleteRegistrar($id)
+    {
+        $conn = $this->connect();
+
+        $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        if ($stmt->execute()) {
+
+            // Check if a row was actually deleted
+            if ($stmt->affected_rows > 0) {
+                $stmt->close();
+                return true;
+            } else {
+                $stmt->close();
+                return false;
+            }
+
+        } else {
+
+            $stmt->close();
+            return false;
+
         }
     }
 
@@ -453,7 +527,7 @@ class admins extends Dbh
     ");
 
         $stmt->bind_param(
-            "ssiiisi",
+            "ssiissi",
             $editSubName,
             $editSubCode,
             $editLecUnits,

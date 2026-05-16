@@ -1,11 +1,11 @@
 <?php session_start();
-include('includes/regHeader.php'); ?>
+include('includes/verHeader.php'); ?>
 
 <?php
-include('../../classes/admin.php');
+include('../../classes/registrar.php');
 
-$data = new admins();
-$row = $data->viewRegistrars();
+$data = new registrar();
+$row = $data->viewPending();
 ?>
 
 <div class="min-h-screen bg-slate-50">
@@ -26,15 +26,6 @@ $row = $data->viewRegistrars();
             <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Account Management</h1>
         </div>
 
-        <div class="flex-1 justify-end flex">
-            <button onclick="createModal.showModal()" class="btn btn-primary btn-sm shadow-md shadow-blue-200 gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Create Account
-            </button>
-        </div>
     </div>
 
     <div class="max-w-6xl mx-auto p-6 md:p-10">
@@ -42,12 +33,11 @@ $row = $data->viewRegistrars();
         <div class="flex flex-col md:flex-row items-baseline justify-between mb-8 gap-2">
             <div>
                 <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">
-                    Registrar <span class="text-blue-600">Accounts</span>
+                    Pending <span class="text-blue-600">Accounts</span>
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Manage and oversee staff access levels and credentials.</p>
             </div>
             <div class="badge badge-lg bg-blue-50 text-blue-700 border-blue-100 font-medium px-4 py-3">
-                <?php echo count($row); ?> Total Members
+                <?php echo count($row); ?> Total Accounts
             </div>
         </div>
 
@@ -58,6 +48,7 @@ $row = $data->viewRegistrars();
                         <tr>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Name</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Email Address</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Status</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200 text-right">Actions
                             </th>
                         </tr>
@@ -93,20 +84,23 @@ $row = $data->viewRegistrars();
                                         <?php echo htmlspecialchars($items['email']); ?>
                                     </td>
 
+                                    <td class="py-4 px-6 text-slate-500 font-medium italic">
+                                        <?php echo htmlspecialchars($items['status']); ?>
+                                    </td>
+
                                     <td class="py-4 px-6 text-right">
                                         <div class="flex justify-end gap-2">
                                             <button
-                                                class="btn btn-sm btn-ghost hover:bg-white hover:text-blue-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-blue-200 --btn-edit"
-                                                data-name="<?php echo $items['name']; ?>"
-                                                data-email="<?php echo $items['email']; ?>">
+                                                class="btn btn-sm btn-ghost hover:bg-white hover:text-green-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-green-200 --btn-verify"
+                                                data-id="<?php echo $items['id']; ?>">
 
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                        d="M5 13l4 4L19 7" />
                                                 </svg>
 
-                                                Edit
+                                                Verify
                                             </button>
 
                                             <button
@@ -275,4 +269,4 @@ $row = $data->viewRegistrars();
 
 </div>
 
-<?php include('includes/regFooter.php'); ?>
+<?php include('includes/verFooter.php'); ?>
