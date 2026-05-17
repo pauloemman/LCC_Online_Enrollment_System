@@ -233,6 +233,97 @@ class registrar extends Dbh
         }
     }
 
+    ////////////////////////////////////////// CURRICULUM SUBJECTS //////////////////////////////////////////
+
+    //view subjects
+    public function viewSubjects()
+    {
+        $conn = $this->connect();
+
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT * 
+            FROM subjects 
+            ORDER BY id DESC";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0
+            ? $result->fetch_all(MYSQLI_ASSOC)
+            : [];
+    }
+
+    //view curriculum subjects
+    public function viewCurriculumSubs()
+    {
+        $conn = $this->connect();
+
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT * 
+            FROM curriculum_subjects 
+            ORDER BY id DESC";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0
+            ? $result->fetch_all(MYSQLI_ASSOC)
+            : [];
+    }
+
+    //add subject curriculum
+    public function addSubCurriculum($curriculumId, $subjectId)
+    {
+        $conn = $this->connect();
+
+        // INSERT CURRICULUM
+        $stmt = $conn->prepare("
+        INSERT INTO curriculum_subjects
+        (
+            curriculum_id,
+            subject_id
+        )
+        VALUES
+        (
+            ?, ?
+        )
+    ");
+
+        $stmt->bind_param(
+            "ii",
+            $curriculumId,
+            $subjectId
+        );
+
+        if ($stmt->execute()) {
+
+            return 1;
+
+        } else {
+
+            return 2;
+        }
+    }
 }
 ;
 ?>

@@ -392,7 +392,7 @@ class admins extends Dbh
     }
 
     ////////////////////////////////////////// SUBJECTS //////////////////////////////////////////
-    //view courses
+    //view subjects
     public function viewSubjects()
     {
         $conn = $this->connect();
