@@ -4,24 +4,26 @@
 <script>
 $(document).ready(function() {
 
-    //create course
+    //create curriculum
     $('.--btn-register').on('click', function(e) {
 
         e.preventDefault();
 
-        let departmentId = $('#departmentId').val();
-        let couName = $('#couName').val();
-        let couCode = $('#couCode').val();
+        let courseId = $('#courseId').val();
+        let yearLevel = $('#yearLevel').val();
+        let semester = $('#semester').val();
+        let sYear = $('#sYear').val();
 
         $.ajax({
-            url: '../../handlers/create_course.php',
+            url: '../../handlers/create_curriculum.php',
             method: "POST",
 
             data: {
                 register: true,
-                departmentId: departmentId,
-                couName: couName,
-                couCode: couCode
+                courseId: courseId,
+                yearLevel: yearLevel,
+                semester: semester,
+                sYear: sYear
             },
 
             dataType: 'json',
@@ -63,12 +65,16 @@ $(document).ready(function() {
     $(document).on('click', '.--btn-edit', function() {
 
         let id = $(this).data('id');
-        let name = $(this).data('name');
-        let code = $(this).data('code');
+        let cid = $(this).data('cid');
+        let year = $(this).data('year');
+        let sem = $(this).data('sem');
+        let school = $(this).data('school');
 
         $('#id').val(id);
-        $('#editCouName').val(name);
-        $('#editCouCode').val(code);
+        $('#editCourseId').val(cid);
+        $('#editYearLevel').val(year);
+        $('#editSemester').val(sem);
+        $('#editSchoolYear').val(school);
 
         editModal.showModal();
     });
@@ -79,19 +85,23 @@ $(document).ready(function() {
 
         // Grab the values
         const id = $('#id').val().trim();
-        const editCouName = $('#editCouName').val().trim();
-        const editCouCode = $('#editCouCode').val().trim();
+        const editCourseId = $('#editCourseId').val().trim();
+        const editYearLevel = $('#editYearLevel').val().trim();
+        const editSemester = $('#editSemester').val().trim();
+        const editSchoolYear = $('#editSchoolYear').val().trim();
 
         // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
-        formData.append('editCouName', editCouName);
-        formData.append('editCouCode', editCouCode);
+        formData.append('editCourseId', editCourseId);
+        formData.append('editYearLevel', editYearLevel);
+        formData.append('editSemester', editSemester);
+        formData.append('editSchoolYear', editSchoolYear);
 
         // AJAX request
         $.ajax({
-            url: '../../handlers/edit_course.php',
+            url: '../../handlers/edit_curriculum.php',
             method: 'POST',
             data: formData,
             processData: false,
@@ -100,13 +110,13 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
 
-                    alert("Course updated successfully!");
+                    alert("Curriculum updated successfully!");
 
                     editModal.close();
                     location.reload();
 
                 } else {
-                    alert(response.error || "Failed to update course.");
+                    alert(response.error || "Failed to update curriculum.");
                 }
             },
             error: function(xhr, status, error) {
@@ -115,7 +125,7 @@ $(document).ready(function() {
         });
     });
 
-    //delete course
+    //delete curriculum
     $('.--btn-delete').on('click', function(e) {
         e.preventDefault();
 
@@ -123,15 +133,15 @@ $(document).ready(function() {
         let row = $(this).closest('tr');
 
         if (!id) {
-            alert('Invalid course ID.');
+            alert('Invalid curriculum ID.');
             return;
         }
 
         if (confirm(
-                'Are you sure you want to delete this Course? All subjects under this course will also get deleted.'
+                'Are you sure you want to delete this Curriculum?'
             )) {
             $.ajax({
-                url: '../../handlers/delete_course.php',
+                url: '../../handlers/delete_curriculum.php',
                 method: 'POST',
                 data: {
                     'id': id

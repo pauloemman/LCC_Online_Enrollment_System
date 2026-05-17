@@ -13,7 +13,7 @@ $courses = $data->viewCourses();
 
     <div class="navbar bg-base-100 shadow-sm border-b border-slate-200 px-4 md:px-8 sticky top-0 z-30">
         <div class="flex-1">
-            <a href="home.php" class="btn btn-ghost btn-sm gap-2 text-slate-600 hover:bg-slate-100">
+            <a href="curriculum.php" class="btn btn-ghost btn-sm gap-2 text-slate-600 hover:bg-slate-100">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -88,7 +88,8 @@ $courses = $data->viewCourses();
                             <td class="py-4 px-6">
                                 <div class="flex items-center gap-3">
                                     <span class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">
-                                        <?php echo htmlspecialchars($items['course_id']); ?>
+                                        <?php echo htmlspecialchars($items['course_name']); ?>
+                                        (<?php echo htmlspecialchars($items['course_code']); ?>)
                                     </span>
                                 </div>
                             </td>
@@ -254,7 +255,7 @@ $courses = $data->viewCourses();
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Edit Course</h2>
+                <h2 class="text-xl font-bold text-white">Edit Curriculum</h2>
             </div>
 
             <div class="p-6">
@@ -271,23 +272,70 @@ $courses = $data->viewCourses();
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Course Name
+                                Course
                             </span>
                         </label>
 
-                        <input type="text" id="editCouName" name="course_name"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                        <select id="editCourseId" name="editCourseId"
+                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
+
+                            <option value="">Select Course</option>
+
+                            <?php foreach ($courses as $course) { ?>
+                            <option value="<?php echo $course['id']; ?>">
+                                <?php echo htmlspecialchars($course['course_name']); ?>
+                                (
+                                <?php echo htmlspecialchars($course['course_code']); ?>)
+                            </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Course Code
+                                Year Level
                             </span>
                         </label>
 
-                        <input type="text" id="editCouCode" name="course_code"
+                        <select id="editYearLevel" name="editYearLevel"
+                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                            required>
+                            <option value="">Select Year</option>
+
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
+                                Semester
+                            </span>
+                        </label>
+
+                        <select id="editSemester" name="editSemester"
+                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                            required>
+                            <option value="">Select Semester</option>
+
+                            <option value="1st Semester">1st Semester</option>
+                            <option value="2nd Semester">2nd Semester</option>
+                        </select>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
+                                School Year
+                            </span>
+                        </label>
+
+                        <input type="text" id="editSchoolYear" name="editSchoolYear"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
