@@ -4,22 +4,30 @@
 <script>
 $(document).ready(function() {
 
-    //add subject to curriculum
+    //ADD
     $('.--btn-register').on('click', function(e) {
 
         e.preventDefault();
 
-        let curriculumId = $('#curriculumId').val();
-        let subjectId = $('#subjectId').val();
+        let applicant = $('#applicant').val();
+        let fname = $('#fname').val();
+        let mname = $('#mname').val();
+        let lname = $('#lname').val();
+        let email = $('#email').val();
+        let exStatus = $('#exStatus').val();
 
         $.ajax({
-            url: '../../handlers/add_subject_curriculum.php',
+            url: '../../handlers/add_account.php',
             method: "POST",
 
             data: {
                 register: true,
-                curriculumId: curriculumId,
-                subjectId: subjectId
+                applicant: applicant,
+                fname: fname,
+                mname: mname,
+                lname: lname,
+                email: email,
+                exStatus: exStatus
             },
 
             dataType: 'json',
@@ -61,34 +69,51 @@ $(document).ready(function() {
     $(document).on('click', '.--btn-edit', function() {
 
         let id = $(this).data('id');
-        let cid = $(this).data('cid');
-        let sid = $(this).data('sid');
+        let app = $(this).data('app');
+        let fname = $(this).data('fname');
+        let mname = $(this).data('mname');
+        let lname = $(this).data('lname');
+        let email = $(this).data('email');
+        let examstats = $(this).data('examstats');
 
         $('#id').val(id);
-        $('#editCurriculumId').val(cid);
-        $('#editSubjectId').val(sid);
+        $('#editApplicant').val(app);
+        $('#editFname').val(fname);
+        $('#editMname').val(mname);
+        $('#editLname').val(lname);
+        $('#editEmail').val(email);
+        $('#editExStatus').val(examstats);
 
         editModal.showModal();
     });
 
-    //edit course
+    //edit section
     $('.--btn-update').on('click', function(e) {
         e.preventDefault();
 
         // Grab the values
         const id = $('#id').val().trim();
-        const editCurriculumId = $('#editCurriculumId').val().trim();
-        const editSubjectId = $('#editSubjectId').val().trim();
+        const editApplicant = $('#editApplicant').val().trim();
+        const editFname = $('#editFname').val().trim();
+        const editMname = $('#editMname').val().trim();
+        const editLname = $('#editLname').val().trim();
+        const editEmail = $('#editEmail').val().trim();
+        const editExStatus = $('#editExStatus').val().trim();
 
         // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
-        formData.append('editCurriculumId', editCurriculumId);
-        formData.append('editSubjectId', editSubjectId);
+        formData.append('editApplicant', editApplicant);
+        formData.append('editFname', editFname);
+        formData.append('editMname', editMname);
+        formData.append('editLname', editLname);
+        formData.append('editEmail', editEmail);
+        formData.append('editExStatus', editExStatus);
+
         // AJAX request
         $.ajax({
-            url: '../../handlers/edit_curriculum_subject.php',
+            url: '../../handlers/edit_exam_passers.php',
             method: 'POST',
             data: formData,
             processData: false,
@@ -97,13 +122,13 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
 
-                    alert("Subject Curriculum updated successfully!");
+                    alert("account updated successfully!");
 
                     editModal.close();
                     location.reload();
 
                 } else {
-                    alert(response.error || "Failed to update subject curriculum.");
+                    alert(response.error || "Failed to update account.");
                 }
             },
             error: function(xhr, status, error) {
@@ -112,7 +137,7 @@ $(document).ready(function() {
         });
     });
 
-    //delete curriculum subject
+    //delete Examinee Account
     $('.--btn-delete').on('click', function(e) {
         e.preventDefault();
 
@@ -120,15 +145,15 @@ $(document).ready(function() {
         let row = $(this).closest('tr');
 
         if (!id) {
-            alert('Invalid curriculum ID.');
+            alert('Invalid Examinee Account ID.');
             return;
         }
 
         if (confirm(
-                'Are you sure you want to delete this Subject Curriculum?'
+                'Are you sure you want to delete this Examinee Account?'
             )) {
             $.ajax({
-                url: '../../handlers/delete_curriculum_subject.php',
+                url: '../../handlers/delete_exam_passers.php',
                 method: 'POST',
                 data: {
                     'id': id

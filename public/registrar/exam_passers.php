@@ -1,12 +1,11 @@
 <?php session_start();
-include('includes/subHeader.php'); ?>
+include('header.php'); ?>
 
 <?php
-include('../../classes/admin.php');
+include('../../classes/registrar.php');
 
-$data = new admins();
-$row = $data->viewSubjects();
-$courses = $data->viewCourses();
+$data = new registrar();
+$row = $data->viewExamPassers();
 ?>
 
 <div class="min-h-screen bg-slate-50">
@@ -24,7 +23,7 @@ $courses = $data->viewCourses();
         </div>
 
         <div class="flex-none hidden lg:block">
-            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Subjects Management</h1>
+            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Account Management</h1>
         </div>
 
         <div class="flex-1 justify-end flex">
@@ -33,9 +32,9 @@ $courses = $data->viewCourses();
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Create Subject
-            </button>
+                Add Account
         </div>
+
     </div>
 
     <div class="max-w-6xl mx-auto p-6 md:p-10">
@@ -43,12 +42,11 @@ $courses = $data->viewCourses();
         <div class="flex flex-col md:flex-row items-baseline justify-between mb-8 gap-2">
             <div>
                 <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">
-                    Subjects
+                    <span class="text-blue-600">Accounts</span>
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Manage Subjects.</p>
             </div>
             <div class="badge badge-lg bg-blue-50 text-blue-700 border-blue-100 font-medium px-4 py-3">
-                <?php echo count($row); ?> Total Subjects
+                <?php echo count($row); ?> Total Accounts
             </div>
         </div>
 
@@ -57,13 +55,12 @@ $courses = $data->viewCourses();
                 <table class="table w-full border-separate border-spacing-0">
                     <thead class="bg-slate-50">
                         <tr>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Subject Code</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Subject Name</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Lecture Units</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Lab Units</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Year Level</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Semester</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Date Created</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Applicant NO.</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">First Name</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Middle Name</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Last Name</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Email</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Exam Status</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200 text-right">Actions
                             </th>
                         </tr>
@@ -79,7 +76,7 @@ $courses = $data->viewCourses();
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                     </svg>
-                                    <span class="text-lg font-semibold tracking-tight">No subjects found.</span>
+                                    <span class="text-lg font-semibold tracking-tight">No accounts found.</span>
                                 </div>
                             </td>
                         </tr>
@@ -87,36 +84,32 @@ $courses = $data->viewCourses();
                         <?php foreach ($row as $items) { ?>
                         <tr class="hover:bg-blue-50/50 transition-all duration-200 group">
 
-                            <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['subject_code']); ?>
-                            </td>
-
                             <td class="py-4 px-6">
                                 <div class="flex items-center gap-3">
                                     <span class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">
-                                        <?php echo htmlspecialchars($items['subject_name']); ?>
+                                        <?php echo htmlspecialchars($items['applicant_no']); ?>
                                     </span>
                                 </div>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['lecture_units']); ?>
+                                <?php echo htmlspecialchars($items['first_name']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['lab_units']); ?>
+                                <?php echo htmlspecialchars($items['middle_name']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['year_level']); ?>
+                                <?php echo htmlspecialchars($items['last_name']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['semester']); ?>
+                                <?php echo htmlspecialchars($items['email']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['created_at']); ?>
+                                <?php echo htmlspecialchars($items['exam_status']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-right">
@@ -124,12 +117,12 @@ $courses = $data->viewCourses();
                                     <button
                                         class="btn btn-sm btn-ghost hover:bg-white hover:text-blue-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-blue-200 --btn-edit"
                                         data-id="<?php echo $items['id']; ?>"
-                                        data-code="<?php echo $items['subject_code']; ?>"
-                                        data-name="<?php echo $items['subject_name']; ?>"
-                                        data-lecture="<?php echo $items['lecture_units']; ?>"
-                                        data-lab="<?php echo $items['lab_units']; ?>"
-                                        data-year="<?php echo $items['year_level']; ?>"
-                                        data-semester="<?php echo $items['semester']; ?>">
+                                        data-app="<?php echo $items['applicant_no']; ?>"
+                                        data-fname="<?php echo $items['first_name']; ?>"
+                                        data-mname="<?php echo $items['middle_name']; ?>"
+                                        data-lname="<?php echo $items['last_name']; ?>"
+                                        data-email="<?php echo $items['email']; ?>"
+                                        data-examstats="<?php echo $items['exam_status']; ?>">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -160,12 +153,12 @@ $courses = $data->viewCourses();
         </div>
     </div>
 
-    <!-- CREATE NEW SUBJECT -->
+    <!-- ADD ACCOUNT -->
     <dialog id="createModal" class="modal">
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Create New Subject</h2>
+                <h2 class="text-xl font-bold text-white">ADD ACCOUNT</h2>
             </div>
 
             <div class="p-6">
@@ -174,105 +167,71 @@ $courses = $data->viewCourses();
 
                 <form id="createForm" class="space-y-4">
 
-                    <!-- COURSE -->
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Course
-                            </span>
-                        </label>
-
-                        <select id="courseId" name="courseId"
-                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-
-                            <option value="">Select Course</option>
-
-                            <?php foreach ($courses as $course) { ?>
-                            <option value="<?php echo $course['id']; ?>">
-                                <?php echo htmlspecialchars($course['course_name']); ?>
-                                (
-                                <?php echo htmlspecialchars($course['course_code']); ?>)
-                            </option>
-                            <?php } ?>
-
-                        </select>
-                    </div>
-
-                    <!-- CODE -->
+                    <!-- Applicant No. -->
                     <div class="form-control">
                         <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Subject Code
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Applicant NO.
                             </span></label>
-                        <input type="text" id="subCode" name="subCode" placeholder="ITS 100"
+                        <input type="text" id="applicant" name="applicant" placeholder="2026-2000"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- SUBJECT NAME -->
+                    <!-- firstname -->
                     <div class="form-control">
                         <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Subject
-                                Name</span></label>
-                        <input type="text" id="subName" name="subName" placeholder="Programming 1"
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">First Name
+                            </span></label>
+                        <input type="text" id="fname" name="fname" placeholder="PAULO EMMANUEL"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- LECTURE UNITS -->
+                    <!-- middlename -->
                     <div class="form-control">
                         <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Lecture
-                                Units</span></label>
-                        <input type="number" id="lecUnits" name="lecUnits" placeholder="3"
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Middle Name
+                            </span></label>
+                        <input type="text" id="mname" name="mname" placeholder="GORNEZ"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- LAB UNITS -->
+                    <!-- lastname -->
                     <div class="form-control">
-                        <label class="label"><span class="label-text font-bold text-slate-600 uppercase text-[10px]">Lab
-                                Units</span></label>
-                        <input type="number" id="labUnits" name="labUnits" placeholder="1"
+                        <label class="label"><span
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Last Name
+                            </span></label>
+                        <input type="text" id="lname" name="lname" placeholder="SERNAL"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- YEAR LEVEL -->
+                    <!-- email -->
+                    <div class="form-control">
+                        <label class="label"><span
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Email
+                            </span></label>
+                        <input type="email" id="email" name="email" placeholder="paulosernal@gmail.com"
+                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                            required>
+                    </div>
+
+                    <!-- exam status -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Year Level
+                                Exam Status
                             </span>
                         </label>
 
-                        <select id="yearLevel" name="yearLevel"
+                        <select id="exStatus" name="exStatus"
                             class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
-                            <option value="">Select Year</option>
+                            <option value="">Select Status</option>
 
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
-                        </select>
-                    </div>
-
-                    <!-- SEMESTER -->
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Semester
-                            </span>
-                        </label>
-
-                        <select id="semester" name="semester"
-                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-                            <option value="">Select Semester</option>
-
-                            <option value="1st Semester">1st Semester</option>
-                            <option value="2nd Semester">2nd Semester</option>
+                            <option value="Passed">Passed</option>
+                            <option value="Failed">Failed</option>
                         </select>
                     </div>
 
@@ -283,7 +242,7 @@ $courses = $data->viewCourses();
                             Cancel
                         </button>
                         <button type="button" class="btn flex-1 btn-primary shadow-lg shadow-blue-200 --btn-register">
-                            Create Subject
+                            ADD
                         </button>
                     </div>
                 </form>
@@ -294,12 +253,16 @@ $courses = $data->viewCourses();
         </form>
     </dialog>
 
-    <!-- EDIT SUBJECT -->
+    <!-- EDIT ACCOUNT -->
     <dialog id="editModal" class="modal">
+
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Edit Subject</h2>
+                <h2 class="text-xl font-bold text-white">Edit Registrar</h2>
+                <p class="text-blue-100 text-xs mt-1 uppercase tracking-widest">
+                    Update Account Details
+                </p>
             </div>
 
             <div class="p-6">
@@ -313,94 +276,71 @@ $courses = $data->viewCourses();
                     <!-- HIDDEN ID -->
                     <input type="hidden" id="id" name="id">
 
-                    <!-- SUBJECT CODE -->
+                    <!-- Applicant No. -->
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Subject Code
-                            </span>
-                        </label>
-
-                        <input type="text" id="editSubCode" name="editSubCode"
+                        <label class="label"><span
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Applicant NO.
+                            </span></label>
+                        <input type="text" id="editApplicant" name="applicant" placeholder="2026-2000"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- SUBJECT NAME -->
+                    <!-- firstname -->
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Subject Name
-                            </span>
-                        </label>
-
-                        <input type="text" id="editSubName" name="editSubName"
+                        <label class="label"><span
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">First Name
+                            </span></label>
+                        <input type="text" id="editFname" name="fname" placeholder="PAULO EMMANUEL"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- LECTURE UNITS -->
+                    <!-- middlename -->
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Lecture Units
-                            </span>
-                        </label>
-
-                        <input type="number" id="editLecUnits" name="editLecUnits"
+                        <label class="label"><span
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Middle Name
+                            </span></label>
+                        <input type="text" id="editMname" name="mname" placeholder="GORNEZ"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- LAB UNITS -->
+                    <!-- lastname -->
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Lab Units
-                            </span>
-                        </label>
-
-                        <input type="number" id="editLabUnits" name="editLabUnits"
+                        <label class="label"><span
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Last Name
+                            </span></label>
+                        <input type="text" id="editLname" name="lname" placeholder="SERNAL"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
 
-                    <!-- YEAR LEVEL -->
+                    <!-- email -->
+                    <div class="form-control">
+                        <label class="label"><span
+                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Email
+                            </span></label>
+                        <input type="email" id="editEmail" name="editEmail" placeholder="paulosernal@gmail.com"
+                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                            required>
+                    </div>
+
+                    <!-- exam status -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Year Level
+                                Exam Status
                             </span>
                         </label>
 
-                        <select id="editYearLevel" name="editYearLevel"
+                        <select id="editExStatus" name="editExStatus"
                             class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
-                            <option value="">Select Year</option>
+                            <option value="">Select Status</option>
 
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
-                        </select>
-                    </div>
-
-
-                    <!-- SEMESTER -->
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Semester
-                            </span>
-                        </label>
-
-                        <select id="editSemester" name="editSemester"
-                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-                            <option value="">Select Semester</option>
-
-                            <option value="1st Semester">1st Semester</option>
-                            <option value="2nd Semester">2nd Semester</option>
+                            <option value="Passed">Passed</option>
+                            <option value="Failed">Failed</option>
                         </select>
                     </div>
 
@@ -413,20 +353,22 @@ $courses = $data->viewCourses();
                         </button>
 
                         <button type="button" class="btn flex-1 btn-primary shadow-lg shadow-blue-200 --btn-update">
-                            Update Subject
+                            Update Account
                         </button>
 
                     </div>
 
                 </form>
+
             </div>
         </div>
 
         <form method="dialog" class="modal-backdrop bg-slate-900/40 backdrop-blur-sm">
             <button>close</button>
         </form>
+
     </dialog>
 
 </div>
 
-<?php include('includes/subFooter.php'); ?>
+<?php include('includes/exPassersFooter.php'); ?>

@@ -1,5 +1,5 @@
 <?php session_start();
-include('includes/curHeader.php'); ?>
+include('header.php'); ?>
 
 <?php
 include('../../classes/registrar.php');

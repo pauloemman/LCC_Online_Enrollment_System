@@ -1,11 +1,11 @@
 <?php session_start();
-include('includes/subHeader.php'); ?>
+include('header.php'); ?>
 
 <?php
 include('../../classes/registrar.php');
 
 $data = new registrar();
-$row = $data->viewCurriculumSubs();
+$row = $data->viewCurriculumSubjects();
 $curriculums = $data->viewCurriculum();
 $subjects = $data->viewSubjects();
 ?>
@@ -64,7 +64,6 @@ $subjects = $data->viewSubjects();
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Semester</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">School Year</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Subject</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Date Created</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200 text-right">Actions
                             </th>
                         </tr>
@@ -111,11 +110,9 @@ $subjects = $data->viewSubjects();
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['subject']); ?>
-                            </td>
-
-                            <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['created_at']); ?>
+                                <?php echo htmlspecialchars($items['subject_code']); ?>
+                                -
+                                <?php echo htmlspecialchars($items['subject_name']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-right">
@@ -123,10 +120,8 @@ $subjects = $data->viewSubjects();
                                     <button
                                         class="btn btn-sm btn-ghost hover:bg-white hover:text-blue-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-blue-200 --btn-edit"
                                         data-id="<?php echo $items['id']; ?>"
-                                        data-cid="<?php echo $items['course_id']; ?>"
-                                        data-year="<?php echo $items['year_level']; ?>"
-                                        data-sem="<?php echo $items['semester']; ?>"
-                                        data-school="<?php echo $items['school_year']; ?>">
+                                        data-cid="<?php echo $items['curriculum_id']; ?>"
+                                        data-sid="<?php echo $items['subject_id']; ?>">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -157,12 +152,12 @@ $subjects = $data->viewSubjects();
         </div>
     </div>
 
-    <!-- CREATE NEW COURSE -->
+    <!-- CREATE NEW CURRICULUM SUBJECT -->
     <dialog id="createModal" class="modal">
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Create New Curriculum</h2>
+                <h2 class="text-xl font-bold text-white">Create New Curriculum Subject</h2>
             </div>
 
             <div class="p-6">
@@ -240,12 +235,12 @@ $subjects = $data->viewSubjects();
         </form>
     </dialog>
 
-    <!-- EDIT DEPARTMENT -->
+    <!-- EDIT CURRICULUM SUBJECT -->
     <dialog id="editModal" class="modal">
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Edit Curriculum</h2>
+                <h2 class="text-xl font-bold text-white">Edit Curriculum Subject</h2>
             </div>
 
             <div class="p-6">
@@ -259,75 +254,55 @@ $subjects = $data->viewSubjects();
                     <!-- HIDDEN ID -->
                     <input type="hidden" id="id" name="id">
 
+                    <!-- Curriculum -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Course
+                                Curriculum
                             </span>
                         </label>
 
-                        <select id="editCourseId" name="editCourseId"
+                        <select id="editCurriculumId" name="editCurriculumId"
                             class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
 
-                            <option value="">Select Course</option>
+                            <option value="">Select Curriculum</option>
 
-                            <?php foreach ($courses as $course) { ?>
-                            <option value="<?php echo $course['id']; ?>">
-                                <?php echo htmlspecialchars($course['course_name']); ?>
-                                (
-                                <?php echo htmlspecialchars($course['course_code']); ?>)
+                            <?php foreach ($curriculums as $curriculum) { ?>
+                            <option value="<?php echo $curriculum['id']; ?>">
+
+                                <?php echo htmlspecialchars($curriculum['course_name']); ?>
+
+                                (<?php echo htmlspecialchars($curriculum['year_level']); ?>,
+                                <?php echo htmlspecialchars($curriculum['semester']); ?>)
+
                             </option>
                             <?php } ?>
                         </select>
                     </div>
 
+                    <!-- subjects -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Year Level
+                                Subject
                             </span>
                         </label>
 
-                        <select id="editYearLevel" name="editYearLevel"
+                        <select id="editSubjectId" name="editSubjectId"
                             class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
-                            <option value="">Select Year</option>
 
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
+                            <option value="">Select Subject</option>
+
+                            <?php foreach ($subjects as $subject) { ?>
+                            <option value="<?php echo $subject['id']; ?>">
+                                <?php echo htmlspecialchars($subject['subject_name']); ?>
+                                (
+                                <?php echo htmlspecialchars($subject['subject_code']); ?>)
+                            </option>
+                            <?php } ?>
                         </select>
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Semester
-                            </span>
-                        </label>
-
-                        <select id="editSemester" name="editSemester"
-                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-                            <option value="">Select Semester</option>
-
-                            <option value="1st Semester">1st Semester</option>
-                            <option value="2nd Semester">2nd Semester</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                School Year
-                            </span>
-                        </label>
-
-                        <input type="text" id="editSchoolYear" name="editSchoolYear"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
                     </div>
 
                     <div class="flex gap-3 pt-6">
@@ -355,4 +330,4 @@ $subjects = $data->viewSubjects();
 
 </div>
 
-<?php include('includes/subFooter.php'); ?>
+<?php include('includes/curSubFooter.php'); ?>

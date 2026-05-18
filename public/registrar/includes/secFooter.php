@@ -4,22 +4,26 @@
 <script>
 $(document).ready(function() {
 
-    //add subject to curriculum
+    //create section
     $('.--btn-register').on('click', function(e) {
 
         e.preventDefault();
 
-        let curriculumId = $('#curriculumId').val();
-        let subjectId = $('#subjectId').val();
+        let courseId = $('#courseId').val();
+        let section = $('#section').val();
+        let yearLevel = $('#yearLevel').val();
+        let semester = $('#semester').val();
 
         $.ajax({
-            url: '../../handlers/add_subject_curriculum.php',
+            url: '../../handlers/create_section.php',
             method: "POST",
 
             data: {
                 register: true,
-                curriculumId: curriculumId,
-                subjectId: subjectId
+                courseId: courseId,
+                section: section,
+                yearLevel: yearLevel,
+                semester: semester
             },
 
             dataType: 'json',
@@ -62,33 +66,42 @@ $(document).ready(function() {
 
         let id = $(this).data('id');
         let cid = $(this).data('cid');
-        let sid = $(this).data('sid');
+        let section = $(this).data('section');
+        let year = $(this).data('year');
+        let sem = $(this).data('sem');
 
         $('#id').val(id);
-        $('#editCurriculumId').val(cid);
-        $('#editSubjectId').val(sid);
+        $('#editCourseId').val(cid);
+        $('#editSection').val(section);
+        $('#editYearLevel').val(year);
+        $('#editSemester').val(sem);
 
         editModal.showModal();
     });
 
-    //edit course
+    //edit section
     $('.--btn-update').on('click', function(e) {
         e.preventDefault();
 
         // Grab the values
         const id = $('#id').val().trim();
-        const editCurriculumId = $('#editCurriculumId').val().trim();
-        const editSubjectId = $('#editSubjectId').val().trim();
+        const editCourseId = $('#editCourseId').val().trim();
+        const editSection = $('#editSection').val().trim();
+        const editYearLevel = $('#editYearLevel').val().trim();
+        const editSemester = $('#editSemester').val().trim();
 
         // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
-        formData.append('editCurriculumId', editCurriculumId);
-        formData.append('editSubjectId', editSubjectId);
+        formData.append('editCourseId', editCourseId);
+        formData.append('editSection', editSection);
+        formData.append('editYearLevel', editYearLevel);
+        formData.append('editSemester', editSemester);
+
         // AJAX request
         $.ajax({
-            url: '../../handlers/edit_curriculum_subject.php',
+            url: '../../handlers/edit_section.php',
             method: 'POST',
             data: formData,
             processData: false,
@@ -97,13 +110,13 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
 
-                    alert("Subject Curriculum updated successfully!");
+                    alert("section updated successfully!");
 
                     editModal.close();
                     location.reload();
 
                 } else {
-                    alert(response.error || "Failed to update subject curriculum.");
+                    alert(response.error || "Failed to update section.");
                 }
             },
             error: function(xhr, status, error) {
@@ -112,7 +125,7 @@ $(document).ready(function() {
         });
     });
 
-    //delete curriculum subject
+    //delete section
     $('.--btn-delete').on('click', function(e) {
         e.preventDefault();
 
@@ -120,15 +133,15 @@ $(document).ready(function() {
         let row = $(this).closest('tr');
 
         if (!id) {
-            alert('Invalid curriculum ID.');
+            alert('Invalid section ID.');
             return;
         }
 
         if (confirm(
-                'Are you sure you want to delete this Subject Curriculum?'
+                'Are you sure you want to delete this Section?'
             )) {
             $.ajax({
-                url: '../../handlers/delete_curriculum_subject.php',
+                url: '../../handlers/delete_section.php',
                 method: 'POST',
                 data: {
                     'id': id

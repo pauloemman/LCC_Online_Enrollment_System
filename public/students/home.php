@@ -46,7 +46,7 @@ include('header.php'); ?>
                         <div class="card-body lg:w-2/3 p-8 md:p-12">
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="badge badge-primary font-bold px-4 py-3">OPEN</div>
-                                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-[0.2em]">S.Y. 2025-2026
+                                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-[0.2em]">S.Y. 2026-2027
                                 </h2>
                             </div>
 
@@ -101,7 +101,7 @@ include('header.php'); ?>
                                             15</div>
                                         <div class="text-xs">
                                             <p class="font-bold text-slate-800 leading-none">Registration Deadline</p>
-                                            <p class="text-slate-400 mt-1">April 2026</p>
+                                            <p class="text-slate-400 mt-1">June 2026</p>
                                         </div>
                                     </div>
 

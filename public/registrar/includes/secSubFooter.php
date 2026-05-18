@@ -4,22 +4,28 @@
 <script>
 $(document).ready(function() {
 
-    //add subject to curriculum
+    //add subject to section
     $('.--btn-register').on('click', function(e) {
 
         e.preventDefault();
 
-        let curriculumId = $('#curriculumId').val();
+        let sectionId = $('#sectionId').val();
         let subjectId = $('#subjectId').val();
+        let schedule = $('#schedule').val();
+        let room = $('#room').val();
+        let instructor = $('#instructor').val();
 
         $.ajax({
-            url: '../../handlers/add_subject_curriculum.php',
+            url: '../../handlers/add_section_subject.php',
             method: "POST",
 
             data: {
                 register: true,
-                curriculumId: curriculumId,
-                subjectId: subjectId
+                sectionId: sectionId,
+                subjectId: subjectId,
+                schedule: schedule,
+                room: room,
+                instructor: instructor
             },
 
             dataType: 'json',
@@ -61,12 +67,18 @@ $(document).ready(function() {
     $(document).on('click', '.--btn-edit', function() {
 
         let id = $(this).data('id');
-        let cid = $(this).data('cid');
-        let sid = $(this).data('sid');
+        let secId = $(this).data('secId');
+        let subId = $(this).data('subId');
+        let schedule = $(this).data('schedule');
+        let room = $(this).data('room');
+        let instructor = $(this).data('instructor');
 
         $('#id').val(id);
-        $('#editCurriculumId').val(cid);
-        $('#editSubjectId').val(sid);
+        $('#editSectionId').val(secId);
+        $('#editSubjectId').val(subId);
+        $('#editSchedule').val(schedule);
+        $('#editRoom').val(room);
+        $('#editInstructor').val(instructor);
 
         editModal.showModal();
     });
@@ -77,18 +89,24 @@ $(document).ready(function() {
 
         // Grab the values
         const id = $('#id').val().trim();
-        const editCurriculumId = $('#editCurriculumId').val().trim();
+        const editSectionId = $('#editSectionId').val().trim();
         const editSubjectId = $('#editSubjectId').val().trim();
+        const editSchedule = $('#editSchedule').val().trim();
+        const editRoom = $('#editRoom').val().trim();
+        const editInstructor = $('#editInstructor').val().trim();
 
         // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
-        formData.append('editCurriculumId', editCurriculumId);
+        formData.append('editSectionId', editSectionId);
         formData.append('editSubjectId', editSubjectId);
+        formData.append('editSchedule', editSchedule);
+        formData.append('editRoom', editRoom);
+        formData.append('editInstructor', editInstructor);
         // AJAX request
         $.ajax({
-            url: '../../handlers/edit_curriculum_subject.php',
+            url: '../../handlers/edit_section_subject.php',
             method: 'POST',
             data: formData,
             processData: false,
@@ -97,13 +115,13 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
 
-                    alert("Subject Curriculum updated successfully!");
+                    alert("Subject Subject updated successfully!");
 
                     editModal.close();
                     location.reload();
 
                 } else {
-                    alert(response.error || "Failed to update subject curriculum.");
+                    alert(response.error || "Failed to update subject section.");
                 }
             },
             error: function(xhr, status, error) {
@@ -120,15 +138,15 @@ $(document).ready(function() {
         let row = $(this).closest('tr');
 
         if (!id) {
-            alert('Invalid curriculum ID.');
+            alert('Invalid Section Subject ID.');
             return;
         }
 
         if (confirm(
-                'Are you sure you want to delete this Subject Curriculum?'
+                'Are you sure you want to delete this?'
             )) {
             $.ajax({
-                url: '../../handlers/delete_curriculum_subject.php',
+                url: '../../handlers/delete_section_subject.php',
                 method: 'POST',
                 data: {
                     'id': id
