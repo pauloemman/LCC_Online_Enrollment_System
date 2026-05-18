@@ -1,6 +1,6 @@
 <?php
 include('../classes/registrar.php');
-$admin = new registrar();
+$registrar = new registrar();
 
 header('Content-Type: application/json');
 
@@ -9,24 +9,24 @@ if (isset($_POST['id'])) {
 
     if ($id <= 0) {
         $response = [
-            'error' => 'Invalid Account ID.'
+            'error' => 'Invalid Curriculum ID.'
         ];
     } else {
-        $deleted = $admin->deleteVerAccount($id);
+        $deleted = $registrar->deleteCurriculum($id);
 
         if ($deleted) {
             $response = [
-                'success' => 'Account has been deleted successfully!'
+                'success' => 'Curriculum has been deleted successfully!'
             ];
         } else {
             $response = [
-                'error' => 'Failed to delete Account. Database error.'
+                'error' => 'Failed to delete Curriculum. Database error.'
             ];
         }
     }
 } else {
     $response = [
-        'error' => 'No Account selected.'
+        'error' => 'No Curriculum selected.'
     ];
 }
 

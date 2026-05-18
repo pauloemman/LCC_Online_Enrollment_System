@@ -8,6 +8,7 @@ $(document).ready(function() {
     $('.--btn-register').on('click', function(e) {
         e.preventDefault();
 
+        let applicant_no = $('#applicant_no').val();
         let name = $('#name').val();
         let email = $('#email').val();
         let password = $('#password').val();
@@ -16,7 +17,8 @@ $(document).ready(function() {
             url: '../handlers/register.php',
             method: "post",
             data: {
-                'register': true, //
+                'register': true,
+                'applicant_no': applicant_no,
                 'name': name,
                 'email': email,
                 'password': password,

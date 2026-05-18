@@ -38,6 +38,21 @@ include('includes/header.php'); ?>
                 </div>
 
                 <div class="card-body p-8 space-y-3">
+
+                    <!-- APPLICANT -->
+                    <div class="form-control">
+                        <label class="label pb-1">
+                            <span class="label-text font-black text-slate-400 uppercase text-[9px] tracking-[0.15em]">
+                                Applicant Number
+                            </span>
+                        </label>
+
+                        <input type="text" id="applicant_no" placeholder="2026-0001"
+                            class="input input-bordered w-full bg-slate-50 border-slate-200 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100 transition-all duration-300 rounded-2xl text-sm font-semibold"
+                            required>
+                    </div>
+
+                    <!-- FULLNAME -->
                     <div class="form-control">
                         <label class="label pb-1">
                             <span
@@ -49,6 +64,7 @@ include('includes/header.php'); ?>
                             required>
                     </div>
 
+                    <!-- EMAIL -->
                     <div class="form-control">
                         <label class="label pb-1">
                             <span
@@ -60,6 +76,7 @@ include('includes/header.php'); ?>
                             required>
                     </div>
 
+                    <!-- PASSWORD -->
                     <div class="form-control">
                         <label class="label pb-1">
                             <span

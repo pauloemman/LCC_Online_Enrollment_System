@@ -47,10 +47,10 @@ include('header.php'); ?>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
 
                 <a href="departments.php"
-                    class="group relative card bg-white rounded-2xl border-b-4 border-blue-600 shadow-xl hover:-translate-y-2 transition-all duration-500">
+                    class="group relative card bg-white rounded-2xl border-b-4 border-blue-600 shadow-xl hover:-translate-y-2 transition-all duration-500 lg:col-span-3">
                     <div class="card-body p-5">
                         <div
                             class="absolute -top-4 right-6 p-3 bg-blue-600 text-white rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
@@ -82,7 +82,7 @@ include('header.php'); ?>
                 </a>
 
                 <a href="courses.php"
-                    class="group relative card bg-white rounded-2xl border-b-4 border-cyan-500 shadow-xl hover:-translate-y-2 transition-all duration-500">
+                    class="group relative card bg-white rounded-2xl border-b-4 border-cyan-500 shadow-xl hover:-translate-y-2 transition-all duration-500 lg:col-span-3">
                     <div class="card-body p-5">
                         <div
                             class="absolute -top-4 right-6 p-3 bg-cyan-500 text-white rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
@@ -114,14 +114,14 @@ include('header.php'); ?>
                 </a>
 
                 <a href="subjects.php"
-                    class="group relative card bg-white rounded-2xl border-b-4 border-indigo-600 shadow-xl hover:-translate-y-2 transition-all duration-500">
+                    class="group relative card bg-white rounded-2xl border-b-4 border-indigo-600 shadow-xl hover:-translate-y-2 transition-all duration-500 lg:col-span-3">
                     <div class="card-body p-5">
                         <div
                             class="absolute -top-4 right-6 p-3 bg-indigo-600 text-white rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 002-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 002-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                             </svg>
                         </div>
                         <div class="mt-2">
@@ -145,8 +145,41 @@ include('header.php'); ?>
                     </div>
                 </a>
 
+                <a href="prerequisites.php"
+                    class="group relative card bg-white rounded-2xl border-b-4 border-amber-500 shadow-xl hover:-translate-y-2 transition-all duration-500 lg:col-span-3">
+                    <div class="card-body p-5">
+                        <div
+                            class="absolute -top-4 right-6 p-3 bg-amber-500 text-white rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/xl" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                        </div>
+                        <div class="mt-2">
+                            <div class="badge badge-xs font-black bg-amber-50 border-none text-amber-600 mb-2 px-2">
+                                FLOW</div>
+                            <h2 class="text-lg font-black text-slate-800 tracking-tight mb-1">Prerequisites</h2>
+                            <p class="text-[10px] text-slate-500 font-semibold leading-tight">Map and link conditional
+                                course pathways and logic rules.</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-[9px] font-black text-amber-600 uppercase tracking-widest">Link
+                                Rules</span>
+                            <div
+                                class="w-6 h-6 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
                 <a href="students.php"
-                    class="group relative card bg-white rounded-2xl border-b-4 border-emerald-500 shadow-xl hover:-translate-y-2 transition-all duration-500">
+                    class="group relative card bg-white rounded-2xl border-b-4 border-emerald-500 shadow-xl hover:-translate-y-2 transition-all duration-500 lg:col-span-4">
                     <div class="card-body p-5">
                         <div
                             class="absolute -top-4 right-6 p-3 bg-emerald-500 text-white rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
@@ -179,7 +212,7 @@ include('header.php'); ?>
                 </a>
 
                 <a href="registrars.php"
-                    class="group relative card bg-white rounded-2xl border-b-4 border-violet-600 shadow-xl hover:-translate-y-2 transition-all duration-500">
+                    class="group relative card bg-white rounded-2xl border-b-4 border-violet-600 shadow-xl hover:-translate-y-2 transition-all duration-500 lg:col-span-4">
                     <div class="card-body p-5">
                         <div
                             class="absolute -top-4 right-6 p-3 bg-violet-600 text-white rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
@@ -212,11 +245,11 @@ include('header.php'); ?>
                 </a>
 
                 <a href="admins.php"
-                    class="group relative card bg-white rounded-2xl border-b-4 border-slate-900 shadow-xl hover:-translate-y-2 transition-all duration-500">
+                    class="group relative card bg-white rounded-2xl border-b-4 border-slate-900 shadow-xl hover:-translate-y-2 transition-all duration-500 lg:col-span-4">
                     <div class="card-body p-5">
                         <div
                             class="absolute -top-4 right-6 p-3 bg-slate-900 text-white rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            <svg xmlns="http://www.w3.org/2000/xl" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />

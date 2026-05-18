@@ -5,23 +5,33 @@ require_once('connection.php');
 class Users extends Dbh
 {
 
-    //register
-    public function register($name, $email, $hashed_password)
+    public function register($applicant_no, $name, $email, $hashed_password)
     {
         $conn = $this->connect();
 
-        // Check name
-        $search_id = $conn->prepare("SELECT name FROM users WHERE name = ?");
-        $search_id->bind_param("s", $name);
-        $search_id->execute();
-        $search_id->store_result();
+        // CHECK IF APPLICANT EXISTS AND PASSED
+        $check_exam = $conn->prepare("
+        SELECT id 
+        FROM exam_passers
+        WHERE applicant_no = ?
+        AND exam_status = 'Passed'
+    ");
 
-        if ($search_id->num_rows > 0) {
+        $check_exam->bind_param("s", $applicant_no);
+        $check_exam->execute();
+        $check_exam->store_result();
+
+        if ($check_exam->num_rows == 0) {
             return 3;
         }
 
-        // Check email
-        $search_email = $conn->prepare("SELECT email FROM users WHERE email = ?");
+        // CHECK EMAIL IF ALREADY REGISTERED
+        $search_email = $conn->prepare("
+        SELECT email 
+        FROM users 
+        WHERE email = ?
+    ");
+
         $search_email->bind_param("s", $email);
         $search_email->execute();
         $search_email->store_result();
@@ -30,22 +40,46 @@ class Users extends Dbh
             return 4;
         }
 
-        $role = "student";
-        $status = "pending";
-
-        // INSERT
-        $stmt = $conn->prepare("
-        INSERT INTO users (name, email, password, role, status) 
-        VALUES (?, ?, ?, ?, ?)
+        // CHECK IF APPLICANT ALREADY REGISTERED
+        $search_applicant = $conn->prepare("
+        SELECT id 
+        FROM users 
+        WHERE applicant_no = ?
     ");
 
-        $stmt->bind_param("sssss", $name, $email, $hashed_password, $role, $status);
+        $search_applicant->bind_param("s", $applicant_no);
+        $search_applicant->execute();
+        $search_applicant->store_result();
+
+        if ($search_applicant->num_rows > 0) {
+            return 5;
+        }
+
+        $role = "student";
+        $status = "active";
+
+        // INSERT USER
+        $stmt = $conn->prepare("
+        INSERT INTO users
+        (applicant_no, name, email, password, role, status)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+
+        $stmt->bind_param(
+            "ssssss",
+            $applicant_no,
+            $name,
+            $email,
+            $hashed_password,
+            $role,
+            $status
+        );
 
         if ($stmt->execute()) {
             return 1;
-        } else {
-            return 2;
         }
+
+        return 2;
     }
 
     //login

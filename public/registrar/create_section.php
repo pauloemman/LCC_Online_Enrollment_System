@@ -1,11 +1,11 @@
 <?php session_start();
-include('includes/subHeader.php'); ?>
+include('header.php'); ?>
 
 <?php
-include('../../classes/admin.php');
+include('../../classes/registrar.php');
 
-$data = new admins();
-$row = $data->viewSubjects();
+$data = new registrar();
+$row = $data->viewCorSec();
 $courses = $data->viewCourses();
 ?>
 
@@ -13,7 +13,7 @@ $courses = $data->viewCourses();
 
     <div class="navbar bg-base-100 shadow-sm border-b border-slate-200 px-4 md:px-8 sticky top-0 z-30">
         <div class="flex-1">
-            <a href="home.php" class="btn btn-ghost btn-sm gap-2 text-slate-600 hover:bg-slate-100">
+            <a href="curriculum.php" class="btn btn-ghost btn-sm gap-2 text-slate-600 hover:bg-slate-100">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -24,7 +24,7 @@ $courses = $data->viewCourses();
         </div>
 
         <div class="flex-none hidden lg:block">
-            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Subjects Management</h1>
+            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Sections Management</h1>
         </div>
 
         <div class="flex-1 justify-end flex">
@@ -33,7 +33,7 @@ $courses = $data->viewCourses();
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Create Subject
+                Create Section
             </button>
         </div>
     </div>
@@ -43,12 +43,12 @@ $courses = $data->viewCourses();
         <div class="flex flex-col md:flex-row items-baseline justify-between mb-8 gap-2">
             <div>
                 <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">
-                    Subjects
+                    Sections
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Manage Subjects.</p>
+                <p class="text-slate-500 text-sm mt-1">Manage Sections.</p>
             </div>
             <div class="badge badge-lg bg-blue-50 text-blue-700 border-blue-100 font-medium px-4 py-3">
-                <?php echo count($row); ?> Total Subjects
+                <?php echo count($row); ?> Total Sections
             </div>
         </div>
 
@@ -57,10 +57,8 @@ $courses = $data->viewCourses();
                 <table class="table w-full border-separate border-spacing-0">
                     <thead class="bg-slate-50">
                         <tr>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Subject Code</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Subject Name</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Lecture Units</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Lab Units</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Course Name</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Section</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Year Level</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Semester</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Date Created</th>
@@ -79,7 +77,7 @@ $courses = $data->viewCourses();
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                     </svg>
-                                    <span class="text-lg font-semibold tracking-tight">No subjects found.</span>
+                                    <span class="text-lg font-semibold tracking-tight">No Subjects found.</span>
                                 </div>
                             </td>
                         </tr>
@@ -87,24 +85,18 @@ $courses = $data->viewCourses();
                         <?php foreach ($row as $items) { ?>
                         <tr class="hover:bg-blue-50/50 transition-all duration-200 group">
 
-                            <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['subject_code']); ?>
-                            </td>
-
                             <td class="py-4 px-6">
                                 <div class="flex items-center gap-3">
                                     <span class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">
-                                        <?php echo htmlspecialchars($items['subject_name']); ?>
+                                        <?php echo htmlspecialchars($items['course_name']); ?>
+                                        (
+                                        <?php echo htmlspecialchars($items['course_code']); ?>)
                                     </span>
                                 </div>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['lecture_units']); ?>
-                            </td>
-
-                            <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                <?php echo htmlspecialchars($items['lab_units']); ?>
+                                <?php echo htmlspecialchars($items['section_name']); ?>
                             </td>
 
                             <td class="py-4 px-6 text-slate-500 font-medium italic">
@@ -124,13 +116,11 @@ $courses = $data->viewCourses();
                                     <button
                                         class="btn btn-sm btn-ghost hover:bg-white hover:text-blue-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-blue-200 --btn-edit"
                                         data-id="<?php echo $items['id']; ?>"
-                                        data-code="<?php echo $items['subject_code']; ?>"
-                                        data-name="<?php echo $items['subject_name']; ?>"
-                                        data-lecture="<?php echo $items['lecture_units']; ?>"
-                                        data-lab="<?php echo $items['lab_units']; ?>"
+                                        data-cid="<?php echo $items['course_id']; ?>"
+                                        data-section="<?php echo $items['section_name']; ?>"
                                         data-year="<?php echo $items['year_level']; ?>"
-                                        data-semester="<?php echo $items['semester']; ?>">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        data-sem="<?php echo $items['semester']; ?>">
+                                        <svg xmlns=" http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -160,12 +150,12 @@ $courses = $data->viewCourses();
         </div>
     </div>
 
-    <!-- CREATE NEW SUBJECT -->
+    <!-- CREATE NEW SECTION -->
     <dialog id="createModal" class="modal">
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Create New Subject</h2>
+                <h2 class="text-xl font-bold text-white">Create New Section</h2>
             </div>
 
             <div class="p-6">
@@ -174,7 +164,7 @@ $courses = $data->viewCourses();
 
                 <form id="createForm" class="space-y-4">
 
-                    <!-- COURSE -->
+                    <!-- Course -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
@@ -195,47 +185,27 @@ $courses = $data->viewCourses();
                                 <?php echo htmlspecialchars($course['course_code']); ?>)
                             </option>
                             <?php } ?>
-
                         </select>
                     </div>
 
-                    <!-- CODE -->
+                    <!-- SECTION NAME -->
                     <div class="form-control">
-                        <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Subject Code
-                            </span></label>
-                        <input type="text" id="subCode" name="subCode" placeholder="ITS 100"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-                    </div>
+                        <label class="label">
+                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
+                                Section
+                            </span>
+                        </label>
 
-                    <!-- SUBJECT NAME -->
-                    <div class="form-control">
-                        <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Subject
-                                Name</span></label>
-                        <input type="text" id="subName" name="subName" placeholder="Programming 1"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                        <select id="section" name="section"
+                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
-                    </div>
+                            <option value="">Select Section</option>
 
-                    <!-- LECTURE UNITS -->
-                    <div class="form-control">
-                        <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Lecture
-                                Units</span></label>
-                        <input type="number" id="lecUnits" name="lecUnits" placeholder="3"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-                    </div>
-
-                    <!-- LAB UNITS -->
-                    <div class="form-control">
-                        <label class="label"><span class="label-text font-bold text-slate-600 uppercase text-[10px]">Lab
-                                Units</span></label>
-                        <input type="number" id="labUnits" name="labUnits" placeholder="1"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
                     </div>
 
                     <!-- YEAR LEVEL -->
@@ -294,12 +264,12 @@ $courses = $data->viewCourses();
         </form>
     </dialog>
 
-    <!-- EDIT SUBJECT -->
+    <!-- EDIT SECTION -->
     <dialog id="editModal" class="modal">
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Edit Subject</h2>
+                <h2 class="text-xl font-bold text-white">Edit Section</h2>
             </div>
 
             <div class="p-6">
@@ -313,56 +283,48 @@ $courses = $data->viewCourses();
                     <!-- HIDDEN ID -->
                     <input type="hidden" id="id" name="id">
 
-                    <!-- SUBJECT CODE -->
+                    <!-- COURSE -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Subject Code
+                                Course
                             </span>
                         </label>
 
-                        <input type="text" id="editSubCode" name="editSubCode"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                        <select id="editCourseId" name="editCourseId"
+                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
+
+                            <option value="">Select Course</option>
+
+                            <?php foreach ($courses as $course) { ?>
+                            <option value="<?php echo $course['id']; ?>">
+                                <?php echo htmlspecialchars($course['course_name']); ?>
+                                (
+                                <?php echo htmlspecialchars($course['course_code']); ?>)
+                            </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
-                    <!-- SUBJECT NAME -->
+                    <!-- SECTION NAME -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Subject Name
+                                Section
                             </span>
                         </label>
 
-                        <input type="text" id="editSubName" name="editSubName"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                        <select id="editSection" name="editSection"
+                            class="select select-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
-                    </div>
+                            <option value="">Select Section</option>
 
-                    <!-- LECTURE UNITS -->
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Lecture Units
-                            </span>
-                        </label>
-
-                        <input type="number" id="editLecUnits" name="editLecUnits"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-                    </div>
-
-                    <!-- LAB UNITS -->
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Lab Units
-                            </span>
-                        </label>
-
-                        <input type="number" id="editLabUnits" name="editLabUnits"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
                     </div>
 
                     <!-- YEAR LEVEL -->
@@ -384,7 +346,6 @@ $courses = $data->viewCourses();
                             <option value="4th Year">4th Year</option>
                         </select>
                     </div>
-
 
                     <!-- SEMESTER -->
                     <div class="form-control">
@@ -413,7 +374,7 @@ $courses = $data->viewCourses();
                         </button>
 
                         <button type="button" class="btn flex-1 btn-primary shadow-lg shadow-blue-200 --btn-update">
-                            Update Subject
+                            Update Section
                         </button>
 
                     </div>
@@ -429,4 +390,4 @@ $courses = $data->viewCourses();
 
 </div>
 
-<?php include('includes/subFooter.php'); ?>
+<?php include('includes/secFooter.php'); ?>

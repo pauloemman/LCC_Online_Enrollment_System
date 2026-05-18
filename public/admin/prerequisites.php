@@ -1,11 +1,12 @@
 <?php session_start();
-include('includes/verHeader.php'); ?>
+include('header.php'); ?>
 
 <?php
-include('../../classes/registrar.php');
+include('../../classes/admin.php');
 
-$data = new registrar();
-$row = $data->viewPending();
+$data = new admins();
+$row = $data->viewSubjectPrerequisite();
+$subjects = $data->viewSubjects();
 ?>
 
 <div class="min-h-screen bg-slate-50">
@@ -23,9 +24,19 @@ $row = $data->viewPending();
         </div>
 
         <div class="flex-none hidden lg:block">
-            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Account Management</h1>
+            <h1 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Prerequisites Management
+            </h1>
         </div>
 
+        <div class="flex-1 justify-end flex">
+            <button onclick="createModal.showModal()" class="btn btn-primary btn-sm shadow-md shadow-blue-200 gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                ADD
+            </button>
+        </div>
     </div>
 
     <div class="max-w-6xl mx-auto p-6 md:p-10">
@@ -33,11 +44,12 @@ $row = $data->viewPending();
         <div class="flex flex-col md:flex-row items-baseline justify-between mb-8 gap-2">
             <div>
                 <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">
-                    Pending <span class="text-blue-600">Accounts</span>
+                    Prerequisites Subjects
                 </h2>
+                <p class="text-slate-500 text-sm mt-1">Manage Prerequisites Subjects.</p>
             </div>
             <div class="badge badge-lg bg-blue-50 text-blue-700 border-blue-100 font-medium px-4 py-3">
-                <?php echo count($row); ?> Total Accounts
+                <?php echo count($row); ?> Total Prerequisites Subjects
             </div>
         </div>
 
@@ -46,9 +58,8 @@ $row = $data->viewPending();
                 <table class="table w-full border-separate border-spacing-0">
                     <thead class="bg-slate-50">
                         <tr>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Name</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Email Address</th>
-                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Status</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Subject</th>
+                            <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200">Prerequisite</th>
                             <th class="py-4 px-6 text-slate-600 font-bold border-b border-slate-200 text-right">Actions
                             </th>
                         </tr>
@@ -64,7 +75,7 @@ $row = $data->viewPending();
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                         </svg>
-                                        <span class="text-lg font-semibold tracking-tight">No accounts found.</span>
+                                        <span class="text-lg font-semibold tracking-tight">No prerequisites found.</span>
                                     </div>
                                 </td>
                             </tr>
@@ -72,35 +83,31 @@ $row = $data->viewPending();
                             <?php foreach ($row as $items) { ?>
                                 <tr class="hover:bg-blue-50/50 transition-all duration-200 group">
 
-                                    <td class="py-4 px-6">
-                                        <div class="flex items-center gap-3">
-                                            <span class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">
-                                                <?php echo htmlspecialchars($items['name']); ?>
-                                            </span>
-                                        </div>
+                                    <td class="py-4 px-6 text-slate-500 font-medium italic">
+                                        <?php echo htmlspecialchars($items['subject_name']); ?>
                                     </td>
 
                                     <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                        <?php echo htmlspecialchars($items['email']); ?>
-                                    </td>
-
-                                    <td class="py-4 px-6 text-slate-500 font-medium italic">
-                                        <?php echo htmlspecialchars($items['status']); ?>
+                                        <?php echo htmlspecialchars($items['prerequisite_subject_name']); ?>
                                     </td>
 
                                     <td class="py-4 px-6 text-right">
                                         <div class="flex justify-end gap-2">
                                             <button
-                                                class="btn btn-sm btn-ghost hover:bg-white hover:text-green-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-green-200 --btn-verify"
-                                                data-id="<?php echo $items['id']; ?>">
+                                                class="btn btn-sm btn-ghost hover:bg-white hover:text-blue-600 hover:shadow-sm text-slate-500 border border-transparent hover:border-blue-200 --btn-edit"
+                                                data-id="<?php echo $items['id']; ?>"
+                                                data-cid="<?php echo $items['subject_id']; ?>"
+                                                data-pid="<?php echo $items['prerequisite_subject_id']; ?>">
 
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
+
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M5 13l4 4L19 7" />
+                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+
                                                 </svg>
 
-                                                Verify
+                                                Edit
                                             </button>
 
                                             <button
@@ -125,13 +132,12 @@ $row = $data->viewPending();
         </div>
     </div>
 
-    <!---- CREATE REGISTRAR ACCOUNT ---->
+    <!-- CREATE NEW PREREQUISITE SUBJECT -->
     <dialog id="createModal" class="modal">
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Create New Registrar</h2>
-                <p class="text-blue-100 text-xs mt-1 uppercase tracking-widest">Employee Credentials</p>
+                <h2 class="text-xl font-bold text-white">Create New Prerequisite Subject</h2>
             </div>
 
             <div class="p-6">
@@ -139,31 +145,45 @@ $row = $data->viewPending();
                     class="hidden mb-4 text-sm p-3 rounded-lg bg-rose-50 text-rose-600 border border-rose-100"></div>
 
                 <form id="createForm" class="space-y-4">
+
+                    <!-- Subject -->
                     <div class="form-control">
-                        <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Full
-                                Name</span></label>
-                        <input type="text" id="name" name="name" placeholder="John Doe"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
+                        <label class="label">
+                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
+                                Subject
+                            </span>
+                        </label>
+
+                        <select id="subjectId" name="subjectId" required>
+                            <option value="">Search Subject</option>
+
+                            <?php foreach ($subjects as $subject) { ?>
+                                <option value="<?php echo $subject['id']; ?>">
+                                    <?php echo htmlspecialchars($subject['subject_name']); ?>
+                                    (<?php echo htmlspecialchars($subject['subject_code']); ?>)
+                                </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
+                    <!-- Prerequisite Subject -->
                     <div class="form-control">
-                        <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Email
-                                Address</span></label>
-                        <input type="email" id="email" name="email" placeholder="john@example.com"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
-                    </div>
+                        <label class="label">
+                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
+                                Prerequisite Subject
+                            </span>
+                        </label>
 
-                    <div class="form-control">
-                        <label class="label"><span
-                                class="label-text font-bold text-slate-600 uppercase text-[10px]">Security
-                                Password</span></label>
-                        <input type="password" id="password" name="password" placeholder="••••••••"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
+                        <select id="prerequisiteSubjectId" name="prerequisiteSubjectId" required>
+                            <option value="">Search Prerequisite Subject</option>
+
+                            <?php foreach ($subjects as $subject) { ?>
+                                <option value="<?php echo $subject['id']; ?>">
+                                    <?php echo htmlspecialchars($subject['subject_name']); ?>
+                                    (<?php echo htmlspecialchars($subject['subject_code']); ?>)
+                                </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
                     <div class="flex gap-3 pt-6">
@@ -173,7 +193,7 @@ $row = $data->viewPending();
                             Cancel
                         </button>
                         <button type="button" class="btn flex-1 btn-primary shadow-lg shadow-blue-200 --btn-register">
-                            Register Account
+                            ADD
                         </button>
                     </div>
                 </form>
@@ -184,16 +204,12 @@ $row = $data->viewPending();
         </form>
     </dialog>
 
-    <!-- EDIT REGISTRAR -->
+    <!-- EDIT PREREQUISITE SUBJECT -->
     <dialog id="editModal" class="modal">
-
         <div class="modal-box w-full max-w-md bg-white p-0 overflow-hidden rounded-2xl shadow-2xl">
 
             <div class="bg-blue-600 p-6 text-center">
-                <h2 class="text-xl font-bold text-white">Edit Registrar</h2>
-                <p class="text-blue-100 text-xs mt-1 uppercase tracking-widest">
-                    Update Account Details
-                </p>
+                <h2 class="text-xl font-bold text-white">Edit Perequisite Subject</h2>
             </div>
 
             <div class="p-6">
@@ -204,42 +220,47 @@ $row = $data->viewPending();
 
                 <form id="editForm" class="space-y-4">
 
-                    <!-- NAME -->
+                    <!-- HIDDEN ID -->
+                    <input type="hidden" id="id" name="id">
+
+                    <!-- Subject -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Full Name
+                                Subject
                             </span>
                         </label>
 
-                        <input type="text" id="editName" name="editName" placeholder="John Doe"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            required>
+                        <select id="editSubjectId" name="editSubjectId" required>
+                            <option value="">Search Subject</option>
+
+                            <?php foreach ($subjects as $subject) { ?>
+                                <option value="<?php echo $subject['id']; ?>">
+                                    <?php echo htmlspecialchars($subject['subject_name']); ?>
+                                    (<?php echo htmlspecialchars($subject['subject_code']); ?>)
+                                </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
-                    <!-- EMAIL -->
+                    <!-- Prerequisite Subject -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                Email Address
+                                Prerequisite Subject
                             </span>
                         </label>
 
-                        <input type="email" id="editEmail" name="editEmail" readonly
-                            class="input input-bordered w-full bg-slate-100 text-slate-500">
-                    </div>
+                        <select id="editPrerequisiteSubjectId" name="editPrerequisiteSubjectId" required>
+                            <option value="">Search Prerequisite Subject</option>
 
-                    <!-- PASSWORD -->
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-bold text-slate-600 uppercase text-[10px]">
-                                New Password
-                            </span>
-                        </label>
-
-                        <input type="password" id="editPassword" name="editPassword"
-                            placeholder="Leave blank if unchanged"
-                            class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100">
+                            <?php foreach ($subjects as $subject) { ?>
+                                <option value="<?php echo $subject['id']; ?>">
+                                    <?php echo htmlspecialchars($subject['subject_name']); ?>
+                                    (<?php echo htmlspecialchars($subject['subject_code']); ?>)
+                                </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
                     <div class="flex gap-3 pt-6">
@@ -251,22 +272,20 @@ $row = $data->viewPending();
                         </button>
 
                         <button type="button" class="btn flex-1 btn-primary shadow-lg shadow-blue-200 --btn-update">
-                            Update Account
+                            Update Department
                         </button>
 
                     </div>
 
                 </form>
-
             </div>
         </div>
 
         <form method="dialog" class="modal-backdrop bg-slate-900/40 backdrop-blur-sm">
             <button>close</button>
         </form>
-
     </dialog>
 
 </div>
 
-<?php include('includes/verFooter.php'); ?>
+<?php include('includes/preFooter.php'); ?>

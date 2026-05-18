@@ -10,4 +10,4 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="bg-base-200 min-h-screen"></body>
+<body class="bg-base-200 min-h-screen">
