@@ -81,41 +81,6 @@ include('header.php'); ?>
                     </div>
                 </a>
 
-                <a href="curriculum_subjects.php"
-                    class="group relative flex flex-col justify-between bg-white rounded-3xl border-b-4 border-teal-500 shadow-2xl hover:-translate-y-3 transition-all duration-500 p-5 xl:p-6 min-h-[280px]">
-
-                    <div
-                        class="absolute -top-5 right-6 p-3.5 bg-teal-500 text-white rounded-2xl shadow-xl shadow-teal-500/40 group-hover:scale-110 transition-transform duration-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                    </div>
-
-                    <div class="mt-4 flex-grow">
-                        <div
-                            class="inline-block badge badge-sm font-black bg-teal-50 border-none text-teal-600 mb-3 px-3">
-                            COURSES</div>
-                        <h2 class="text-xl font-black text-slate-800 tracking-tight mb-2">Curriculum Subjects</h2>
-                        <p class="text-[11px] text-slate-500 font-semibold leading-relaxed">Map specific individual
-                            baseline learning subjects and lecture rules to designated paths.</p>
-                    </div>
-
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between w-full">
-                        <span class="text-[10px] font-black text-teal-600 uppercase tracking-widest">Assign
-                            Subjects</span>
-                        <div
-                            class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-teal-500 group-hover:text-white transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M9 5l7 7-7 7" />
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-
                 <a href="create_section.php"
                     class="group relative flex flex-col justify-between bg-white rounded-3xl border-b-4 border-blue-600 shadow-2xl hover:-translate-y-3 transition-all duration-500 p-5 xl:p-6 min-h-[280px]">
 

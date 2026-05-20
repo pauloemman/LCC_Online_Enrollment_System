@@ -560,5 +560,118 @@ class admins extends Dbh
         }
     }
 
+
+    ////////////////////////////////////////// SUBJECTS //////////////////////////////////////////
+    //view prerequisite
+    public function viewSubjectPrerequisite()
+    {
+        $conn = $this->connect();
+
+        $sql = "
+    SELECT 
+        sp.id,
+
+        sp.subject_id,
+        sp.prerequisite_subject_id,
+
+        s1.subject_name AS subject_name,
+        s1.subject_code AS subject_code,
+
+        s2.subject_name AS prerequisite_subject_name,
+        s2.subject_code AS prerequisite_subject_code
+
+    FROM subject_prerequisites sp
+
+    INNER JOIN subjects s1
+        ON sp.subject_id = s1.id
+
+    INNER JOIN subjects s2
+        ON sp.prerequisite_subject_id = s2.id
+
+    ORDER BY sp.id DESC
+";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0
+            ? $result->fetch_all(MYSQLI_ASSOC)
+            : [];
+    }
+
+    //create prerequisite
+    public function createPrerequisite($subjectId, $prerequisiteSubjectId)
+    {
+        $conn = $this->connect();
+
+        // INSERT COURSE
+        $stmt = $conn->prepare("
+        INSERT INTO subject_prerequisites
+        (
+            subject_id,
+            prerequisite_subject_id
+        )
+        VALUES
+        (
+            ?, ?
+        )
+    ");
+
+        $stmt->bind_param(
+            "ii",
+            $subjectId,
+            $prerequisiteSubjectId
+        );
+
+        if ($stmt->execute()) {
+
+            return 1;
+
+        } else {
+
+            return 2;
+        }
+    }
+
+    //update course
+    public function updatePrerequisite($id, $editSubjectId, $editPrerequisiteSubjectId)
+    {
+        $conn = $this->connect();
+
+        $stmt = $conn->prepare("
+        UPDATE subject_prerequisites 
+        SET subject_id = ?, prerequisite_subject_id = ? 
+        WHERE id = ?
+    ");
+
+        $stmt->bind_param("iii", $editSubjectId, $editPrerequisiteSubjectId, $id);
+
+        $stmt->execute();
+
+        // IMPORTANT: check if anything was actually updated
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //delete course
+    public function deletePrerequisite($id)
+    {
+        $conn = $this->connect();
+        $stmt = $conn->prepare("DELETE FROM subject_prerequisites WHERE id = ?");
+        $stmt->bind_param("i", $id);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 ?>

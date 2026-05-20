@@ -75,18 +75,16 @@ $(document).ready(function() {
     $('.--btn-update').on('click', function(e) {
         e.preventDefault();
 
-        // Grab the values
         const id = $('#id').val().trim();
         const editCurriculumId = $('#editCurriculumId').val().trim();
         const editSubjectId = $('#editSubjectId').val().trim();
 
-        // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
         formData.append('editCurriculumId', editCurriculumId);
         formData.append('editSubjectId', editSubjectId);
-        // AJAX request
+
         $.ajax({
             url: '../../handlers/edit_curriculum_subject.php',
             method: 'POST',

@@ -91,7 +91,6 @@ $(document).ready(function() {
     $('.--btn-update').on('click', function(e) {
         e.preventDefault();
 
-        // Grab the values
         const id = $('#id').val().trim();
         const editApplicant = $('#editApplicant').val().trim();
         const editFname = $('#editFname').val().trim();
@@ -100,7 +99,6 @@ $(document).ready(function() {
         const editEmail = $('#editEmail').val().trim();
         const editExStatus = $('#editExStatus').val().trim();
 
-        // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
@@ -111,7 +109,6 @@ $(document).ready(function() {
         formData.append('editEmail', editEmail);
         formData.append('editExStatus', editExStatus);
 
-        // AJAX request
         $.ajax({
             url: '../../handlers/edit_exam_passers.php',
             method: 'POST',
@@ -175,6 +172,50 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    $(document).ready(function() {
+        $('#gradeForm').submit(function(e) {
+            e.preventDefault();
+
+            const $alert = $('#formAlert');
+            $alert.addClass('hidden').removeClass(
+                'bg-rose-50 text-rose-600 border-rose-100 bg-emerald-50 text-emerald-600 border-emerald-100'
+            );
+
+            $.ajax({
+                url: '../../handlers/save_grades.php',
+                method: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(res) {
+                    if (res.success) {
+                        $alert.removeClass('hidden')
+                            .addClass(
+                                'bg-emerald-50 text-emerald-600 border-emerald-100')
+                            .html(
+                                '<strong>Success!</strong> Grades updated successfully.'
+                            );
+                        setTimeout(function() {
+                            window.location.href = 'search_students.php';
+                        }, 1200);
+                    } else {
+                        $alert.removeClass('hidden')
+                            .addClass('bg-rose-50 text-rose-600 border-rose-100')
+                            .html('<strong>Error:</strong> ' + res.error);
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                    $alert.removeClass('hidden')
+                        .addClass('bg-rose-50 text-rose-600 border-rose-100')
+                        .html(
+                            '<strong>System Error:</strong> Critical failure encountered updating records.'
+                        );
+                }
+            });
+        });
+
     });
 
 });

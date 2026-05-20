@@ -83,14 +83,12 @@ $(document).ready(function() {
     $('.--btn-update').on('click', function(e) {
         e.preventDefault();
 
-        // Grab the values
         const id = $('#id').val().trim();
         const editCourseId = $('#editCourseId').val().trim();
         const editYearLevel = $('#editYearLevel').val().trim();
         const editSemester = $('#editSemester').val().trim();
         const editSchoolYear = $('#editSchoolYear').val().trim();
 
-        // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
@@ -99,7 +97,6 @@ $(document).ready(function() {
         formData.append('editSemester', editSemester);
         formData.append('editSchoolYear', editSchoolYear);
 
-        // AJAX request
         $.ajax({
             url: '../../handlers/edit_curriculum.php',
             method: 'POST',

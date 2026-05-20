@@ -56,11 +56,6 @@ include('includes/header.php'); ?>
                         <input type="password" id="login_password" placeholder="••••••••"
                             class="input input-bordered w-full bg-slate-50 border-slate-200 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100 transition-all duration-300 rounded-2xl text-sm font-semibold"
                             required>
-                        <div class="flex justify-end mt-2">
-                            <a href="#"
-                                class="text-[10px] font-black text-blue-600 hover:text-blue-800 transition-colors uppercase tracking-widest">Forgot
-                                Password?</a>
-                        </div>
                     </div>
 
                     <div class="pt-2">

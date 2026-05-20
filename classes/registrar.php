@@ -768,6 +768,296 @@ class registrar extends Dbh
         }
     }
 
+    // view enrollments
+    public function viewEnrollments()
+    {
+        $conn = $this->connect();
+
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT
+
+            enrollment.id,
+            enrollment.year_level,
+            enrollment.semester,
+            enrollment.enrollment_status,
+
+            students.student_no,
+            students.first_name,
+            students.middle_name,
+            students.last_name,
+
+            sections.section_name,
+
+            courses.course_name
+
+        FROM enrollment
+
+        INNER JOIN students
+            ON enrollment.student_id = students.id
+
+        INNER JOIN sections
+            ON enrollment.section_id = sections.id
+
+        INNER JOIN curriculum
+            ON enrollment.curriculum_id = curriculum.id
+
+        INNER JOIN courses
+            ON curriculum.course_id = courses.id
+
+        WHERE enrollment.enrollment_status = 'Pending'
+
+        ORDER BY enrollment.id DESC";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0
+            ? $result->fetch_all(MYSQLI_ASSOC)
+            : [];
+    }
+
+    //approve enrollment
+    public function approveEnrollment($id)
+    {
+        $conn = $this->connect();
+
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        // GET STUDENT ID
+        $sql = "SELECT student_id
+            FROM enrollment
+            WHERE id = ?";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            return false;
+        }
+
+        $row = $result->fetch_assoc();
+        $studentId = $row['student_id'];
+
+        // UPDATE ENROLLMENT TABLE
+        $sqlEnrollment = "UPDATE enrollment
+                      SET enrollment_status = 'Approved'
+                      WHERE id = ?";
+
+        $stmtEnrollment = $conn->prepare($sqlEnrollment);
+
+        if (!$stmtEnrollment) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmtEnrollment->bind_param("i", $id);
+
+        // UPDATE STUDENTS TABLE
+        $sqlStudent = "UPDATE students
+                   SET enrollment_status = 'Approved'
+                   WHERE id = ?";
+
+        $stmtStudent = $conn->prepare($sqlStudent);
+
+        if (!$stmtStudent) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        $stmtStudent->bind_param("i", $studentId);
+
+        $successEnrollment = $stmtEnrollment->execute();
+        $successStudent = $stmtStudent->execute();
+
+        return $successEnrollment && $successStudent;
+    }
+
+    public function searchApprovedStudents($search = '')
+    {
+        $conn = $this->connect();
+
+        if (!$conn) {
+            die("Database connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT
+                enrollment.id AS enrollment_id,
+                enrollment.student_id,
+                enrollment.section_id,
+
+                students.student_no,
+                students.first_name,
+                students.middle_name,
+                students.last_name,
+
+                sections.section_name,
+
+                courses.course_name
+
+            FROM enrollment
+
+            INNER JOIN students
+                ON enrollment.student_id = students.id
+
+            INNER JOIN sections
+                ON enrollment.section_id = sections.id
+
+            INNER JOIN curriculum
+                ON enrollment.curriculum_id = curriculum.id
+
+            INNER JOIN courses
+                ON curriculum.course_id = courses.id
+
+            WHERE enrollment.enrollment_status = 'Approved'";
+
+        // OPTIONAL SEARCH FILTER
+        if (!empty($search)) {
+            $sql .= " AND (
+                    students.student_no LIKE ?
+                    OR students.first_name LIKE ?
+                    OR students.last_name LIKE ?
+                )";
+        }
+
+        $sql .= " ORDER BY enrollment.id DESC";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
+
+        // bind search if exists
+        if (!empty($search)) {
+
+            $like = "%{$search}%";
+
+            $stmt->bind_param("sss", $like, $like, $like);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0
+            ? $result->fetch_all(MYSQLI_ASSOC)
+            : [];
+    }
+
+    public function getStudentById($id)
+    {
+        $conn = $this->connect();
+
+        $sql = "SELECT * FROM students WHERE id = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
+    public function getSectionSubjects($section_id)
+    {
+        $conn = $this->connect();
+
+        $sql = "SELECT
+                section_subjects.subject_id,
+                section_subjects.instructor,
+                subjects.subject_name
+            FROM section_subjects
+            INNER JOIN subjects
+                ON section_subjects.subject_id = subjects.id
+            WHERE section_subjects.section_id = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $section_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function saveOrUpdateGrade(
+        $student_id,
+        $subject_id,
+        $section_id,
+        $enrollment_id,
+        $grade,
+        $remarks
+    ) {
+        $conn = $this->connect();
+
+        // CHECK IF EXISTS
+        $check = "SELECT id FROM student_grades
+              WHERE student_id = ?
+              AND subject_id = ?
+              AND enrollment_id = ?";
+
+        $stmt = $conn->prepare($check);
+        $stmt->bind_param("iii", $student_id, $subject_id, $enrollment_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+
+            // UPDATE EXISTING
+            $row = $result->fetch_assoc();
+            $id = $row['id'];
+
+            $update = "UPDATE student_grades
+                   SET grade = ?, remarks = ?
+                   WHERE id = ?";
+
+            $stmt2 = $conn->prepare($update);
+            $stmt2->bind_param("dsi", $grade, $remarks, $id);
+
+            return $stmt2->execute();
+
+        } else {
+
+            // INSERT NEW
+            $insert = "INSERT INTO student_grades
+            (student_id, subject_id, section_id, enrollment_id, grade, remarks)
+            VALUES (?, ?, ?, ?, ?, ?)";
+
+            $stmt3 = $conn->prepare($insert);
+            $stmt3->bind_param(
+                "iiiids",
+                $student_id,
+                $subject_id,
+                $section_id,
+                $enrollment_id,
+                $grade,
+                $remarks
+            );
+
+            return $stmt3->execute();
+        }
+    }
+
 }
 ;
 ?>

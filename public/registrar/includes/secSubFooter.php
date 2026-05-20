@@ -87,7 +87,6 @@ $(document).ready(function() {
     $('.--btn-update').on('click', function(e) {
         e.preventDefault();
 
-        // Grab the values
         const id = $('#id').val().trim();
         const editSectionId = $('#editSectionId').val().trim();
         const editSubjectId = $('#editSubjectId').val().trim();
@@ -95,7 +94,6 @@ $(document).ready(function() {
         const editRoom = $('#editRoom').val().trim();
         const editInstructor = $('#editInstructor').val().trim();
 
-        // Prepare form data
         let formData = new FormData();
         formData.append('update_profile', true);
         formData.append('id', id);
@@ -104,7 +102,7 @@ $(document).ready(function() {
         formData.append('editSchedule', editSchedule);
         formData.append('editRoom', editRoom);
         formData.append('editInstructor', editInstructor);
-        // AJAX request
+
         $.ajax({
             url: '../../handlers/edit_section_subject.php',
             method: 'POST',

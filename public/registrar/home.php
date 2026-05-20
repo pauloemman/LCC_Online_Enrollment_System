@@ -43,7 +43,7 @@ include('header.php'); ?>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 w-full items-stretch">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full items-stretch">
 
                 <a href="manage_enrollments.php"
                     class="group relative flex flex-col justify-between bg-white rounded-3xl border-b-4 border-blue-600 shadow-2xl hover:-translate-y-3 transition-all duration-500 p-5 xl:p-6 min-h-[280px]">
@@ -116,7 +116,7 @@ include('header.php'); ?>
                     </div>
                 </a>
 
-                <a href="manage_grades.php"
+                <a href="search_students.php"
                     class="group relative flex flex-col justify-between bg-white rounded-3xl border-b-4 border-indigo-600 shadow-2xl hover:-translate-y-3 transition-all duration-500 p-5 xl:p-6 min-h-[280px]">
 
                     <div
@@ -143,41 +143,6 @@ include('header.php'); ?>
                             Grades</span>
                         <div
                             class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M9 5l7 7-7 7" />
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="verifications.php"
-                    class="group relative flex flex-col justify-between bg-white rounded-3xl border-b-4 border-teal-500 shadow-2xl hover:-translate-y-3 transition-all duration-500 p-5 xl:p-6 min-h-[280px]">
-
-                    <div
-                        class="absolute -top-5 right-6 p-3.5 bg-teal-500 text-white rounded-2xl shadow-xl shadow-teal-500/40 group-hover:scale-110 transition-transform duration-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-
-                    <div class="mt-4 flex-grow">
-                        <div
-                            class="inline-block badge badge-sm font-black bg-teal-500 border-none text-white mb-3 px-3 shadow-lg shadow-teal-100 italic">
-                            NEW REQUESTS</div>
-                        <h2 class="text-xl font-black text-slate-800 tracking-tight mb-2">Verifications</h2>
-                        <p class="text-[11px] text-slate-500 font-semibold leading-relaxed">Identity validation and
-                            credential review for portal accounts.</p>
-                    </div>
-
-                    <div
-                        class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between dynamic-footer w-full">
-                        <span class="text-[10px] font-black text-teal-600 uppercase tracking-widest">Start Review</span>
-                        <div
-                            class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center group-hover:bg-teal-500 group-hover:text-white transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"

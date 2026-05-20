@@ -5,11 +5,10 @@ require_once('connection.php');
 class Users extends Dbh
 {
 
-    public function register($applicant_no, $name, $email, $hashed_password)
+    public function register($applicant_no, $name, $email, $hashed_password, $token)
     {
         $conn = $this->connect();
 
-        // CHECK IF APPLICANT EXISTS AND PASSED
         $check_exam = $conn->prepare("
         SELECT id 
         FROM exam_passers
@@ -25,7 +24,6 @@ class Users extends Dbh
             return 3;
         }
 
-        // CHECK EMAIL IF ALREADY REGISTERED
         $search_email = $conn->prepare("
         SELECT email 
         FROM users 
@@ -40,7 +38,6 @@ class Users extends Dbh
             return 4;
         }
 
-        // CHECK IF APPLICANT ALREADY REGISTERED
         $search_applicant = $conn->prepare("
         SELECT id 
         FROM users 
@@ -56,23 +53,34 @@ class Users extends Dbh
         }
 
         $role = "student";
-        $status = "active";
+
+        $status = "pending";
 
         // INSERT USER
         $stmt = $conn->prepare("
         INSERT INTO users
-        (applicant_no, name, email, password, role, status)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (
+            applicant_no,
+            name,
+            email,
+            password,
+            role,
+            status,
+            verification_token,
+            email_verified
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, 0)
     ");
 
         $stmt->bind_param(
-            "ssssss",
+            "sssssss",
             $applicant_no,
             $name,
             $email,
             $hashed_password,
             $role,
-            $status
+            $status,
+            $token
         );
 
         if ($stmt->execute()) {
@@ -133,6 +141,171 @@ class Users extends Dbh
         }
     }
 
+    //enroll new
+    public function enrolNew(
+        $userId,
+        $fname,
+        $mname,
+        $lname,
+        $gender,
+        $bday,
+        $cNum,
+        $address,
+        $departmentId,
+        $courseId,
+        $curriculumId,
+        $sectionId
+    ) {
+
+        $conn = $this->connect();
+
+        // GET year level and semester from curriculum
+        $curriculumQuery = $conn->prepare("
+        SELECT year_level, semester
+        FROM curriculum
+        WHERE id = ?
+    ");
+
+        $curriculumQuery->bind_param("i", $curriculumId);
+        $curriculumQuery->execute();
+
+        $result = $curriculumQuery->get_result();
+
+        if ($result->num_rows == 0) {
+            return 3; // Curriculum not found
+        }
+
+        $curriculumData = $result->fetch_assoc();
+
+        $yearLevel = $curriculumData['year_level'];
+        $semester = $curriculumData['semester'];
+
+        // GENERATE STUDENT NUMBER
+
+        $yearMonth = date('Ym'); // example: 202605
+
+        // GET LAST STUDENT NUMBER THIS MONTH
+        $getLastStudent = $conn->prepare("
+    SELECT student_no
+    FROM students
+    WHERE student_no LIKE ?
+    ORDER BY student_no DESC
+    LIMIT 1
+");
+
+        $searchPattern = $yearMonth . '%';
+
+        $getLastStudent->bind_param("s", $searchPattern);
+        $getLastStudent->execute();
+
+        $lastResult = $getLastStudent->get_result();
+
+        if ($lastResult->num_rows > 0) {
+
+            $lastStudent = $lastResult->fetch_assoc();
+
+            // GET LAST 4 DIGITS
+            $lastNumber = substr($lastStudent['student_no'], -4);
+
+            // INCREMENT
+            $nextNumber = intval($lastNumber) + 1;
+
+        } else {
+
+            // FIRST STUDENT THIS MONTH
+            $nextNumber = 1;
+        }
+
+        // FORMAT TO 4 DIGITS
+        $formattedNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+        // FINAL STUDENT NUMBER
+        $studentNo = $yearMonth . $formattedNumber;
+
+        // INSERT INTO students
+        $stmt = $conn->prepare("
+        INSERT INTO students
+(
+    user_id,
+    student_no,
+    first_name,
+    middle_name,
+    last_name,
+    gender,
+    birthdate,
+    contact_no,
+    address,
+    department_id,
+    course_id,
+    current_year_level,
+    current_semester
+)
+VALUES
+(
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+)
+    ");
+
+        $stmt->bind_param(
+            "issssssssiiss",
+            $userId,
+            $studentNo,
+            $fname,
+            $mname,
+            $lname,
+            $gender,
+            $bday,
+            $cNum,
+            $address,
+            $departmentId,
+            $courseId,
+            $yearLevel,
+            $semester
+        );
+
+        // CHECK student insert
+        if (!$stmt->execute()) {
+            return 2; // Student insert failed
+        }
+
+        // GET inserted student ID
+        $studentId = $conn->insert_id;
+
+        // INSERT INTO enrollment
+        $enrollmentStmt = $conn->prepare("
+        INSERT INTO enrollment
+        (
+            student_id,
+            curriculum_id,
+            section_id,
+            year_level,
+            semester
+        )
+        VALUES
+        (
+            ?, ?, ?, ?, ?
+        )
+    ");
+
+        $enrollmentStmt->bind_param(
+            "iiiss",
+            $studentId,
+            $curriculumId,
+            $sectionId,
+            $yearLevel,
+            $semester
+        );
+
+        // CHECK enrollment insert
+        if ($enrollmentStmt->execute()) {
+
+            return 1; // Success
+
+        } else {
+
+            return 4; // Enrollment insert failed
+        }
+    }
 
 }
 ?>

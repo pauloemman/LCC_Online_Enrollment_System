@@ -172,7 +172,7 @@ $row = $data->viewExamPassers();
                         <label class="label"><span
                                 class="label-text font-bold text-slate-600 uppercase text-[10px]">Applicant NO.
                             </span></label>
-                        <input type="text" id="applicant" name="applicant" placeholder="2026-2000"
+                        <input type="text" id="applicant" name="applicant" placeholder="Your applican number"
                             class="input input-bordered w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-100"
                             required>
                     </div>
